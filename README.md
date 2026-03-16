@@ -20,12 +20,13 @@ npm install
 npm run dev
 ```
 
-The app will open at `http://localhost:5173`
+The app will open at `http://localhost:3000`
 
 ### Build
 
 ```bash
 npm run build
+npm run start
 ```
 
 ### Testing
@@ -47,23 +48,29 @@ npm run format        # Format code with Prettier
 ```
 src/
 ├── components/        # React components
-├── pages/            # Page components
-├── hooks/            # Custom React hooks
-├── stores/           # Zustand stores
-├── services/         # Business logic and services
-│   └── storage/      # Storage adapter pattern
-├── types/            # TypeScript type definitions
-├── utils/            # Utility functions
-├── App.tsx           # Root component
-├── main.tsx          # Entry point
-└── index.css         # Global styles
+│   └── form-sections/ # Form section components
+├── context/           # React context providers
+├── hooks/             # Custom React hooks
+├── page-components/   # Page-level components
+├── providers/         # Context providers
+├── services/          # Business logic and services
+│   └── storage/       # Storage adapter pattern
+├── stores/            # Zustand stores
+├── types/             # TypeScript type definitions
+└── utils/             # Utility functions
+
+app/                   # Next.js App Router pages
+├── create-order/      # Order creation page
+├── dashboard/         # Dashboard page
+├── login/             # Login page
+└── orders/            # Orders pages
 ```
 
 ## Key Technologies
 
 - **React 18** - UI framework
 - **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
+- **Next.js 15** - Full-stack React framework
 - **TanStack Query** - Server state management
 - **Zustand** - Client state management
 - **Tailwind CSS** - Styling
