@@ -140,7 +140,8 @@ interface Order {
   id: string;
   merchantId: string;
   outletId: string;
-  status: 'pending' | 'confirmed' | 'in-transit' | 'delivered' | 'cancelled';
+  status: 'submitted' | 'waiting' | 'closed' | 'cancelled';
+  statusDisplay: 'Shipment Created' | 'Waiting for Pick Up' | 'Delivery Completed' | 'Shipment Cancelled';
   invoiceNumber: string;
   
   recipient: {
@@ -252,11 +253,10 @@ Persists to localStorage for restoration on page reload.
 
 - **Primary**: #ED0577 (Magenta) - Interactive elements, CTAs
 - **Status Colors**:
-  - Pending: #9CA3AF (Gray)
-  - Confirmed: #3B82F6 (Blue)
-  - In-Transit: #F59E0B (Orange)
-  - Delivered: #10B981 (Green)
-  - Cancelled: #EF4444 (Red)
+  - Submitted (Shipment Created): #3B82F6 (Blue)
+  - Waiting (Waiting for Pick Up): #F59E0B (Orange)
+  - Closed (Delivery Completed): #10B981 (Green)
+  - Cancelled (Shipment Cancelled): #EF4444 (Red)
 - **Background**: #FFFFFF (White)
 - **Text**: #1F2937 (Dark Gray)
 - **Border**: #E5E7EB (Light Gray)
@@ -325,7 +325,7 @@ Persists to localStorage for restoration on page reload.
 
 1. User navigates to `/login`
 2. Enters email and password
-3. reCAPTCHA validation (prototype: skipped)
+3. Simulated CAPTCHA validation (checkbox: "I'm not a robot" - always passes in prototype)
 4. Credentials validated against mock data (demo@pinkpin.com / demo123)
 5. Session token generated and stored
 6. Redirect to `/dashboard`
@@ -476,7 +476,7 @@ For any order list with more than 20 orders, displaying should show exactly 20 o
 
 ### Property 13: Status Badge Colors
 
-For any order with a given status, the status badge should display the correct color (green for delivered, orange for in-transit, red for cancelled, gray for pending).
+For any order with a given status, the status badge should display the correct color (green for closed, orange for waiting, red for cancelled, blue for submitted).
 
 **Validates: Requirements 4.7, 11.4**
 
@@ -518,7 +518,7 @@ For any order detail page load, all sections should display: order header, recip
 
 ### Property 20: Dashboard KPI Calculation
 
-For any dashboard load, KPI cards should display: today's volume (orders created today), active shipments (in-transit or confirmed), and success rate ((delivered/total)*100).
+For any dashboard load, KPI cards should display: today's volume (orders created today), active shipments (submitted or waiting status), and success rate ((closed/total)*100).
 
 **Validates: Requirements 12.1, 12.2, 12.3, 12.4**
 

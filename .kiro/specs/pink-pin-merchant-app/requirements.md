@@ -84,7 +84,7 @@ The system prioritizes mobile-first design, offline capability via PWA, and real
 4. WHEN a merchant interacts with buttons and form fields, THE UI_System SHALL ensure all tap targets are at least 44px in height and width
 5. WHEN the app is viewed on mobile, THE UI_System SHALL use Tailwind CSS responsive classes (sm:, md:, lg:) to adjust layouts appropriately
 6. WHEN a merchant uses the app, THE UI_System SHALL use the primary color #ED0577 (magenta) for key interactive elements and status indicators
-7. WHEN the app displays status badges, THE UI_System SHALL use color coding: green for delivered, orange for in-transit, red for cancelled, gray for pending
+7. WHEN the app displays status badges, THE UI_System SHALL use color coding: green for closed (Delivery Completed), orange for waiting (Waiting for Pick Up), red for cancelled (Shipment Cancelled), blue for submitted (Shipment Created)
 
 ---
 
@@ -97,7 +97,7 @@ The system prioritizes mobile-first design, offline capability via PWA, and real
 1. WHEN a merchant navigates to the login page, THE Authentication_System SHALL display a login form with email and password fields
 2. WHEN a merchant enters valid credentials, THE Authentication_System SHALL authenticate the merchant and redirect to the dashboard
 3. WHEN a merchant enters invalid credentials, THE Authentication_System SHALL display a descriptive error message and remain on the login page
-4. WHEN a merchant submits the login form, THE Authentication_System SHALL validate the submission using reCAPTCHA to prevent automated attacks
+4. WHEN a merchant submits the login form, THE Authentication_System SHALL validate the submission using a simulated CAPTCHA (checkbox: "I'm not a robot") to prevent automated attacks
 5. WHERE the system is in prototype mode, THE Authentication_System SHALL accept mock credentials (email: demo@pinkpin.com, password: demo123) for testing
 6. WHEN a merchant closes the browser, THE Authentication_System SHALL maintain the session using secure token storage for up to 7 days
 7. WHEN a merchant clicks logout, THE Authentication_System SHALL clear all session data and redirect to the login page
@@ -183,7 +183,7 @@ The system prioritizes mobile-first design, offline capability via PWA, and real
 
 1. WHEN a merchant navigates to the order history page, THE Order_History_System SHALL display all orders in a paginated list with 20 orders per page
 2. WHEN a merchant applies a date range filter, THE Order_History_System SHALL display only orders created within the selected date range
-3. WHEN a merchant filters by order status, THE Order_History_System SHALL display only orders matching the selected status (pending, confirmed, in-transit, delivered, cancelled)
+3. WHEN a merchant filters by order status, THE Order_History_System SHALL display only orders matching the selected status (submitted, waiting, closed, cancelled)
 4. WHEN a merchant filters by outlet, THE Order_History_System SHALL display only orders originating from the selected outlet
 5. WHEN a merchant filters by invoice number, THE Order_History_System SHALL search and display matching orders
 6. WHEN a merchant filters by service type, THE Order_History_System SHALL display only orders with the selected service type
@@ -208,7 +208,7 @@ The system prioritizes mobile-first design, offline capability via PWA, and real
 1. WHEN a merchant navigates to an order detail page, THE Order_Detail_System SHALL display all order information in a read-only format
 2. WHEN the order detail page loads, THE Order_Detail_System SHALL display the following sections: order header (ID, status, creation date), recipient information, items list, package details, delivery information, and shipping fee breakdown
 3. WHEN an order has a map location, THE Order_Detail_System SHALL display an embedded map showing the outlet origin and delivery destination with a route line
-4. WHEN a merchant views the order status, THE Order_Detail_System SHALL display a color-coded status badge using: blue for pending, orange for in-transit, green for delivered, and red for cancelled statuses
+4. WHEN a merchant views the order status, THE Order_Detail_System SHALL display a color-coded status badge using: blue for submitted (Shipment Created), orange for waiting (Waiting for Pick Up), green for closed (Delivery Completed), and red for cancelled (Shipment Cancelled) statuses
 5. WHEN a merchant views the shipping fee breakdown, THE Order_Detail_System SHALL display base fee, distance, rate, and total shipping fee calculation
 6. WHEN an order is in transit, THE Order_Detail_System SHALL display live tracking information if available
 7. WHEN a merchant clicks "Back", THE Order_Detail_System SHALL return to the order history page preserving the previous filter and sort state
@@ -224,8 +224,8 @@ The system prioritizes mobile-first design, offline capability via PWA, and real
 
 1. WHEN a merchant navigates to the dashboard, THE Dashboard_System SHALL display KPI cards showing: today's order volume, active shipments count, and delivery success rate
 2. WHEN the dashboard loads, THE Dashboard_System SHALL calculate today's volume as the count of orders created in the current calendar day
-3. WHEN the dashboard loads, THE Dashboard_System SHALL calculate active shipments as the count of orders with status in-transit or confirmed
-4. WHEN the dashboard loads, THE Dashboard_System SHALL calculate success rate as (delivered orders / total orders) * 100 for the current month
+3. WHEN the dashboard loads, THE Dashboard_System SHALL calculate active shipments as the count of orders with status submitted or waiting
+4. WHEN the dashboard loads, THE Dashboard_System SHALL calculate success rate as (closed orders / total orders) * 100 for the current month
 5. WHEN a merchant views the KPI cards, THE Dashboard_System SHALL display the metrics with appropriate icons and color coding (green for positive metrics)
 6. WHEN the dashboard loads, THE Dashboard_System SHALL display an order status distribution visualization (pie or bar chart) showing counts for each status
 7. WHEN the dashboard loads, THE Dashboard_System SHALL display a recent activity feed showing the last 10 orders with status, recipient name, and timestamp
