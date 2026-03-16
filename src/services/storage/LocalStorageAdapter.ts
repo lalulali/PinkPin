@@ -1,4 +1,4 @@
-import { Order, Merchant, Outlet } from '@/types'
+import { Order, Merchant, Outlet } from '@/src/types'
 import { StorageAdapter } from './StorageAdapter'
 
 const ORDERS_KEY = 'pink_pin_orders'

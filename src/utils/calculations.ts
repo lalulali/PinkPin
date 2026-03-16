@@ -2,7 +2,7 @@
  * Calculation utilities for distance and shipping fees
  */
 
-import { ServiceType, Coordinates } from '@/types'
+import { ServiceType, Coordinates } from '@/src/types'
 
 /**
  * Calculate great-circle distance between two coordinates using haversine formula

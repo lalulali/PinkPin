@@ -86,7 +86,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 5.1, 5.2, 5.5, 6.1, 6.2_
   - _Complexity: Medium_
 
-- [ ] 9. Implement login page and form
+- [x] 9. Implement login page and form
   - Create LoginPage component with email and password fields
   - Add CAPTCHA checkbox ("I'm not a robot") - always passes in prototype
   - Implement form validation with error messages
@@ -99,7 +99,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 6: Form Validation**
   - **Validates: Requirements 3.1, 3.4**
 
-- [ ] 10. Implement session token storage and management
+- [x] 10. Implement session token storage and management
   - Store authentication token securely in localStorage
   - Implement token expiration logic (7 days)
   - Create token refresh mechanism on activity
@@ -111,7 +111,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 16: Session Persistence**
   - **Validates: Requirements 5.6, 6.1, 6.3**
 
-- [ ] 11. Create protected route wrapper and redirect logic
+- [x] 11. Create protected route wrapper and redirect logic
   - Implement ProtectedRoute component that checks for valid token
   - Redirect unauthenticated users to login page
   - Preserve intended destination for post-login redirect
@@ -122,7 +122,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 17: Protected Route Access**
   - **Validates: Requirements 6.4**
 
-- [ ] 12. Create layout components (Header, Sidebar, MainLayout)
+- [x] 12. Create layout components (Header, Sidebar, MainLayout)
   - Build Header component with logo, user menu, logout button
   - Build Sidebar component with navigation links
   - Create MainLayout wrapper for authenticated pages
@@ -130,7 +130,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
   - _Complexity: Medium_
 
-- [ ] 13. Checkpoint - Verify authentication flow
+- [x] 13. Checkpoint - Verify authentication flow
   - Test login with valid credentials
   - Test login with invalid credentials
   - Test session persistence across page reloads
@@ -142,7 +142,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 3: Map Integration and Distance Calculation
 
-- [ ] 14. Set up Google Maps API integration
+- [x] 14. Set up Google Maps API integration
   - Load Google Maps API with geometry library
   - Create MapContainer component with initialization logic
   - Implement map centering on outlet coordinates
@@ -151,7 +151,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 7.1, 7.8_
   - _Complexity: Medium_
 
-- [ ] 15. Implement map markers and route visualization
+- [x] 15. Implement map markers and route visualization
   - Create outlet marker (blue pin) with outlet icon
   - Create delivery marker (red pin) with destination icon
   - Draw polyline route between outlet and delivery location
@@ -163,6 +163,8 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 - [ ]* 15.1 Write property test for map marker display
   - **Property 18: Map Marker Display**
   - **Validates: Requirements 7.6, 7.7**
+
+- [x] 15a. Migrate Vite to NextJs
 
 - [ ] 16. Implement distance calculation using Google Geometry library
   - Create distance calculation utility using haversine formula

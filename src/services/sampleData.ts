@@ -1,4 +1,4 @@
-import { Order, Merchant, Outlet } from '@/types'
+import { Order, Merchant, Outlet } from '@/src/types'
 
 const SAMPLE_DATA_INITIALIZED_KEY = 'pink_pin_sample_data_initialized'
 

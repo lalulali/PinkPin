@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getStorageAdapter } from '@/services/storage'
+import { getStorageAdapter } from '@/src/services/storage'
 
 /**
  * Hook to delete an order with automatic cache invalidation

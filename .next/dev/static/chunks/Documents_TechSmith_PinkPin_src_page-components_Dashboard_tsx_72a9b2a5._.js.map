@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/christianhadianto/Documents/TechSmith/PinkPin/src/page-components/Dashboard.tsx"],"sourcesContent":["/**\n * Dashboard - Merchant dashboard with KPIs and analytics\n */\n\n'use client'\n\nexport function Dashboard() {\n  return (\n    <div>\n      <h1 className=\"text-2xl font-bold text-gray-900 mb-6\">Dashboard</h1>\n      <p className=\"text-gray-600\">Dashboard content coming soon...</p>\n    </div>\n  )\n}\n\nexport default Dashboard\n"],"names":[],"mappings":";;;;;;;AAAA;;CAEC,GAED;;AAEO,SAAS;IACd,qBACE,kOAAC;;0BACC,kOAAC;gBAAG,WAAU;0BAAwC;;;;;;0BACtD,kOAAC;gBAAE,WAAU;0BAAgB;;;;;;;;;;;;AAGnC;KAPgB;uCASD"}}]
+}

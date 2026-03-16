@@ -2,8 +2,10 @@
  * AuthContext - React Context for authentication state management
  */
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
-import { AuthState, AuthContextValue, LoginCredentials, AuthUser } from '../types/auth'
+'use client'
+
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
+import { AuthState, AuthContextValue, LoginCredentials } from '../types/auth'
 import { authService } from '../services/authService'
 
 interface AuthProviderProps {

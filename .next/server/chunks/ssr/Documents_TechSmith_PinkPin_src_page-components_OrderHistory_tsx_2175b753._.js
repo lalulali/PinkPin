@@ -1,0 +1,3 @@
+module.exports=[12162,a=>{"use strict";var b=a.i(1599);function c(){return(0,b.jsxs)("div",{children:[(0,b.jsx)("h1",{className:"text-2xl font-bold text-gray-900 mb-6",children:"Order History"}),(0,b.jsx)("p",{className:"text-gray-600",children:"Order history coming soon..."})]})}a.s(["OrderHistory",()=>c,"default",0,c])}];
+
+//# sourceMappingURL=Documents_TechSmith_PinkPin_src_page-components_OrderHistory_tsx_2175b753._.js.map

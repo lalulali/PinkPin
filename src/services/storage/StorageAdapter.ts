@@ -1,4 +1,4 @@
-import { Order, Merchant, Outlet } from '@/types'
+import { Order, Merchant, Outlet } from '@/src/types'
 
 /**
  * StorageAdapter interface defines the contract for all storage implementations

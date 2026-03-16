@@ -1,5 +1,4 @@
 import { useUIStore as useStore } from '../stores/uiStore'
-import type { UIFilters, UISort } from '../stores/uiStore'
 import type { OrderStatus, ServiceType } from '../types'
 
 /**

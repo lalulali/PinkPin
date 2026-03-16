@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/christianhadianto/Documents/TechSmith/PinkPin/src/page-components/OrderHistory.tsx"],"sourcesContent":["/**\n * OrderHistory - Paginated list of orders with filtering\n */\n\n'use client'\n\nexport function OrderHistory() {\n  return (\n    <div>\n      <h1 className=\"text-2xl font-bold text-gray-900 mb-6\">Order History</h1>\n      <p className=\"text-gray-600\">Order history coming soon...</p>\n    </div>\n  )\n}\n\nexport default OrderHistory\n"],"names":[],"mappings":";;;;;;;AAAA;;CAEC,GAED;;AAEO,SAAS;IACd,qBACE,kOAAC;;0BACC,kOAAC;gBAAG,WAAU;0BAAwC;;;;;;0BACtD,kOAAC;gBAAE,WAAU;0BAAgB;;;;;;;;;;;;AAGnC;KAPgB;uCASD"}}]
+}

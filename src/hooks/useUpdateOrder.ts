@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { getStorageAdapter } from '@/services/storage'
-import { Order } from '@/types'
+import { getStorageAdapter } from '@/src/services/storage'
+import { Order } from '@/src/types'
 
 /**
  * Hook to update an existing order with automatic cache invalidation
