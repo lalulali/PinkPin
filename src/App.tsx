@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { initializeSampleData } from '@/services/sampleData'
+import { initializationService } from '@/services/initializationService'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,8 +13,10 @@ const queryClient = new QueryClient({
 
 function App() {
   useEffect(() => {
-    // Initialize sample data on first app load
-    initializeSampleData()
+    // Initialize app with sample data on first load
+    initializationService.initialize().catch(error => {
+      console.error('Failed to initialize app:', error)
+    })
   }, [])
 
   return (

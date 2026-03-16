@@ -21,7 +21,7 @@ export function validateRequired(value: string | number | undefined | null): boo
 }
 
 export function getValidationError(
-  field: string,
+  _field: string,
   value: string | number | undefined | null,
   type: 'email' | 'phone' | 'required'
 ): string | null {

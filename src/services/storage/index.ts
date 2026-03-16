@@ -22,5 +22,5 @@ export function setStorageAdapter(adapter: StorageAdapter): void {
   storageAdapter = adapter
 }
 
-export { StorageAdapter } from './StorageAdapter'
+export type { StorageAdapter } from './StorageAdapter'
 export { LocalStorageAdapter } from './LocalStorageAdapter'

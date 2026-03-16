@@ -1,0 +1,116 @@
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import type { OrderStatus, ServiceType } from '../types'
+
+export interface UIFilters {
+  dateRange: {
+    from: Date | null
+    to: Date | null
+  }
+  statuses: OrderStatus[]
+  outletId: string | null
+  serviceTypes: ServiceType[]
+  invoiceNumber: string
+}
+
+export interface UISort {
+  field: 'date' | 'status'
+  direction: 'asc' | 'desc'
+}
+
+export interface UIState {
+  // Filters
+  filters: UIFilters
+  setFilters: (filters: Partial<UIFilters>) => void
+  resetFilters: () => void
+
+  // Sort
+  sort: UISort
+  setSort: (sort: UISort) => void
+
+  // Layout
+  layout: 'card' | 'table'
+  setLayout: (layout: 'card' | 'table') => void
+
+  // Pagination
+  currentPage: number
+  itemsPerPage: number
+  setCurrentPage: (page: number) => void
+  setItemsPerPage: (items: number) => void
+
+  // UI state
+  isLoading: boolean
+  setIsLoading: (loading: boolean) => void
+  error: string | null
+  setError: (error: string | null) => void
+}
+
+const defaultFilters: UIFilters = {
+  dateRange: {
+    from: null,
+    to: null,
+  },
+  statuses: [],
+  outletId: null,
+  serviceTypes: [],
+  invoiceNumber: '',
+}
+
+const defaultSort: UISort = {
+  field: 'date',
+  direction: 'desc',
+}
+
+export const useUIStore = create<UIState>()(
+  persist(
+    (set) => ({
+      // Filters
+      filters: defaultFilters,
+      setFilters: (newFilters) =>
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            ...newFilters,
+          },
+        })),
+      resetFilters: () =>
+        set({
+          filters: defaultFilters,
+        }),
+
+      // Sort
+      sort: defaultSort,
+      setSort: (sort) => set({ sort }),
+
+      // Layout
+      layout: 'card',
+      setLayout: (layout) => set({ layout }),
+
+      // Pagination
+      currentPage: 1,
+      itemsPerPage: 20,
+      setCurrentPage: (page) => set({ currentPage: page }),
+      setItemsPerPage: (items) => set({ itemsPerPage: items }),
+
+      // UI state
+      isLoading: false,
+      setIsLoading: (loading) => set({ isLoading: loading }),
+      error: null,
+      setError: (error) => set({ error }),
+    }),
+    {
+      name: 'pink-pin-ui-store',
+      partialize: (state) => ({
+        filters: state.filters,
+        sort: state.sort,
+        layout: state.layout,
+        currentPage: state.currentPage,
+        itemsPerPage: state.itemsPerPage,
+      }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState as Partial<UIState>),
+      }),
+    }
+  )
+)

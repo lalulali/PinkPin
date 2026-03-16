@@ -37,6 +37,6 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "@testing-library/react": "^14.1.2",
-    "@testing-library/jsdom": "^23.0.1"
+    "jsdom": "^23.0.1"
   }
 }

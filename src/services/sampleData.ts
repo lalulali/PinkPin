@@ -77,10 +77,24 @@ export function generateSampleOrders(): Order[] {
 
     const shippingFee = baseFee + distance * rate
 
+    // Generate 1-3 items per order for variety
+    const itemCount = Math.floor(Math.random() * 3) + 1
+    const items = []
+    for (let j = 0; j < itemCount; j++) {
+      items.push({
+        id: `ITEM-${i}-${j + 1}`,
+        description: `Product ${i + 1}-${j + 1}`,
+        quantity: Math.floor(Math.random() * 5) + 1,
+      })
+    }
+
+    // Vary outlet selection for some orders
+    const outletId = i % 3 === 0 ? 'OUTLET-002' : 'OUTLET-001'
+
     orders.push({
       id: `ORD-${String(i + 1).padStart(5, '0')}`,
       merchantId: 'MERCHANT-001',
-      outletId: 'OUTLET-001',
+      outletId,
       status: statuses[statusIndex],
       statusDisplay: statusDisplays[statusIndex],
       invoiceNumber: `INV-${String(i + 1).padStart(5, '0')}`,
@@ -91,13 +105,7 @@ export function generateSampleOrders(): Order[] {
           lng: 106.8456 + Math.random() * 0.05,
         },
       },
-      items: [
-        {
-          id: `ITEM-${i}-1`,
-          description: `Product ${i + 1}`,
-          quantity: Math.floor(Math.random() * 5) + 1,
-        },
-      ],
+      items,
       package: {
         weight: Math.floor(Math.random() * 10) + 1,
         dimensions: {
@@ -182,5 +190,26 @@ export function initializeSampleData(): void {
     localStorage.setItem('pink_pin_merchants', JSON.stringify(merchants))
     localStorage.setItem('pink_pin_outlets', JSON.stringify(outlets))
     localStorage.setItem(SAMPLE_DATA_INITIALIZED_KEY, 'true')
+
+    console.log(`✅ Sample data initialized: ${orders.length} orders, ${merchants.length} merchants, ${outlets.length} outlets`)
   }
+}
+
+/**
+ * Reset sample data - useful for testing and development
+ */
+export function resetSampleData(): void {
+  localStorage.removeItem('pink_pin_orders')
+  localStorage.removeItem('pink_pin_merchants')
+  localStorage.removeItem('pink_pin_outlets')
+  localStorage.removeItem(SAMPLE_DATA_INITIALIZED_KEY)
+  
+  console.log('🔄 Sample data reset')
+}
+
+/**
+ * Check if sample data has been initialized
+ */
+export function isSampleDataInitialized(): boolean {
+  return localStorage.getItem(SAMPLE_DATA_INITIALIZED_KEY) === 'true'
 }
