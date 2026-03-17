@@ -3,11 +3,7 @@
 import { ErrorBoundary } from '@/src/components/ErrorBoundary'
 import { OrderDetail } from '@/src/page-components/OrderDetail'
 
-export default function OrderDetailPage({
-  params,
-}: {
-  params: { id: string }
-}) {
+export default function OrderDetailPage() {
   return (
     <ErrorBoundary
       fallback={
@@ -46,7 +42,7 @@ export default function OrderDetailPage({
         </div>
       }
     >
-      <OrderDetail params={params} />
+      <OrderDetail />
     </ErrorBoundary>
   )
 }
