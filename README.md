@@ -53,8 +53,11 @@ src/
 ├── hooks/             # Custom React hooks
 ├── page-components/   # Page-level components
 ├── providers/         # Context providers
+├── routes/            # Route configuration
 ├── services/          # Business logic and services
-│   └── storage/       # Storage adapter pattern
+│   ├── storage/       # Storage adapter pattern
+│   ├── offlineService.ts
+│   └── orderCacheService.ts
 ├── stores/            # Zustand stores
 ├── types/             # TypeScript type definitions
 └── utils/             # Utility functions
@@ -64,6 +67,19 @@ app/                   # Next.js App Router pages
 ├── dashboard/         # Dashboard page
 ├── login/             # Login page
 └── orders/            # Orders pages
+
+public/                # Static assets
+├── icons/             # PWA icons
+├── manifest.json      # PWA manifest
+└── sw.js              # Service worker
+
+scripts/               # Build and utility scripts
+└── pwa-audit.sh       # Lighthouse PWA audit script
+
+tests/
+├── properties/        # Property-based tests
+├── integration/       # Integration tests
+└── unit/              # Unit tests
 ```
 
 ## Key Technologies
@@ -85,8 +101,10 @@ app/                   # Next.js App Router pages
 - Real-time shipping fee calculation
 - Order history with filtering and sorting
 - Dashboard with KPIs and analytics
-- Offline support via PWA
+- Offline support via PWA (service worker, offline viewing, order queueing)
+- PWA install prompt and splash screen
 - Storage adapter pattern for flexible data persistence
+- Comprehensive property-based testing with fast-check
 
 ## Demo Credentials
 
