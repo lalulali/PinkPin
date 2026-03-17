@@ -166,7 +166,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 - [x] 15a. Migrate Vite to NextJs
 
-- [ ] 16. Implement distance calculation using Google Geometry library
+- [x] 16. Implement distance calculation using Google Geometry library
   - Create distance calculation utility using haversine formula
   - Calculate great-circle distance between outlet and delivery coordinates
   - Format distance with 1 decimal place precision
@@ -178,7 +178,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 7: Distance Calculation**
   - **Validates: Requirements 7.3, 7.4, 7.5**
 
-- [ ] 17. Implement map click-to-select delivery location
+- [x] 17. Implement map click-to-select delivery location
   - Add click event listener to map
   - Update delivery location marker on click
   - Update delivery address field with clicked coordinates
@@ -186,7 +186,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 7.2, 7.5_
   - _Complexity: Small_
 
-- [ ] 18. Create fallback address input for map failures
+- [x] 18. Create fallback address input for map failures
   - Implement address input field as map fallback
   - Add geocoding fallback for manual address entry
   - Create retry button to attempt map reload
@@ -194,7 +194,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 3.5, 3.6, 3.7_
   - _Complexity: Medium_
 
-- [ ] 19. Checkpoint - Verify map integration
+- [x] 19. Checkpoint - Verify map integration
   - Test map loads and displays correctly
   - Test outlet marker displays at correct location
   - Test clicking map updates delivery location
@@ -206,7 +206,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 4: Shipping Fee Calculation
 
-- [ ] 20. Implement shipping fee calculation logic
+- [x] 20. Implement shipping fee calculation logic
   - Create fee calculation utility: base_fee + (distance * rate)
   - Define service type rates: Standard (10000 base, 5000/km), Express (20000 base, 7500/km), Same-Day (30000 base, 10000/km)
   - Handle edge cases: zero distance, invalid service type
@@ -218,14 +218,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 8: Shipping Fee Calculation**
   - **Validates: Requirements 8.1, 8.5, 8.6, 8.7**
 
-- [ ] 21. Create shipping fee breakdown component
+- [x] 21. Create shipping fee breakdown component
   - Display base fee, distance, rate, and total in breakdown format
   - Update breakdown in real-time as distance or service type changes
   - Format all values as currency
   - _Requirements: 8.1, 8.5, 8.6_
   - _Complexity: Small_
 
-- [ ] 22. Implement distance validation (3 km limit)
+- [x] 22. Implement distance validation (3 km limit)
   - Create validation function to check distance <= 3 km
   - Display error message if distance exceeds 3 km
   - Prevent order confirmation when distance exceeds limit
@@ -236,7 +236,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 9: Distance Validation**
   - **Validates: Requirements 9.4, 9.5**
 
-- [ ] 23. Checkpoint - Verify shipping calculations
+- [x] 23. Checkpoint - Verify shipping calculations
   - Test fee calculation for each service type
   - Test fee updates when distance changes
   - Test fee updates when service type changes
@@ -247,7 +247,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 5: Order Creation Flow
 
-- [ ] 24. Create order creation page layout with accordion form
+- [x] 24. Create order creation page layout with accordion form
   - Build FormAccordion component with collapsible sections
   - Create sections: outlet selection, recipient info, items, package details, delivery info
   - Implement accordion state management (which section is open)
@@ -255,14 +255,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 9.1_
   - _Complexity: Medium_
 
-- [ ] 25. Implement outlet selection section
+- [x] 25. Implement outlet selection section
   - Create outlet selector dropdown/list
   - Display selected outlet on map
   - Update map center and zoom to outlet location
   - _Requirements: 9.2_
   - _Complexity: Small_
 
-- [ ] 26. Implement recipient information form section
+- [x] 26. Implement recipient information form section
   - Create form fields: name, phone, email, address
   - Add real-time validation with error messages
   - Validate email format, phone format, required fields
@@ -275,27 +275,27 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - Test required field validation
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 27. Implement items form section
+- [x] 27. Implement items form section
   - Create form to add multiple items with description and quantity
   - Display item list with total count
   - Allow edit and delete for each item
   - _Requirements: 9.7_
   - _Complexity: Small_
 
-- [ ] 28. Implement package details form section
+- [x] 28. Implement package details form section
   - Create form fields: weight, dimensions (length, width, height), fragile flag
   - Add validation for numeric values
   - _Requirements: 9.8_
   - _Complexity: Small_
 
-- [ ] 29. Implement delivery information form section
+- [x] 29. Implement delivery information form section
   - Create service type selector (standard, express, same-day)
   - Display distance and shipping fee (calculated from map)
   - Show fee breakdown
   - _Requirements: 9.9, 9.10_
   - _Complexity: Small_
 
-- [ ] 30. Implement map panel for order creation
+- [x] 30. Implement map panel for order creation
   - Display interactive map with outlet and delivery markers
   - Allow clicking map to select delivery location
   - Update delivery address field on map click
@@ -303,7 +303,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 9.3, 7.2, 7.5_
   - _Complexity: Medium_
 
-- [ ] 31. Implement live summary panel
+- [x] 31. Implement live summary panel
   - Display order summary with all details
   - Update summary in real-time as form changes
   - Show order total, shipping fee, item count
@@ -311,7 +311,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 9.11_
   - _Complexity: Medium_
 
-- [ ] 32. Implement form auto-save functionality
+- [x] 32. Implement form auto-save functionality
   - Auto-save form data to localStorage every 30 seconds
   - Restore form data on page reload
   - Show auto-save indicator
@@ -322,7 +322,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 11: Auto-Save Functionality**
   - **Validates: Requirements 9.14**
 
-- [ ] 33. Implement order confirmation and creation
+- [x] 33. Implement order confirmation and creation
   - Create "Confirm Order" button that validates all fields
   - Save order to storage via adapter
   - Display success confirmation with order ID
@@ -334,13 +334,13 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 10: Order Creation Persistence**
   - **Validates: Requirements 9.12**
 
-- [ ] 34. Implement cancel functionality
+- [x] 34. Implement cancel functionality
   - Create "Cancel" button that discards form data
   - Return to dashboard without saving
   - _Requirements: 9.13_
   - _Complexity: Small_
 
-- [ ] 35. Implement offline order creation and queueing
+- [x] 35. Implement offline order creation and queueing
   - Detect offline status
   - Allow order creation while offline
   - Queue orders for sync when connectivity restored
@@ -352,7 +352,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 23: Offline Order Creation**
   - **Validates: Requirements 9.15, 14.2, 14.3**
 
-- [ ] 36. Checkpoint - Verify order creation flow
+- [x] 36. Checkpoint - Verify order creation flow
   - Test complete order creation with all fields
   - Test validation errors display correctly
   - Test distance validation prevents orders > 3 km
@@ -365,7 +365,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 6: Order History and Filtering
 
-- [ ] 37. Create order history page layout
+- [x] 37. Create order history page layout
   - Build page with filter bar at top
   - Create layout toggle (card view / table view)
   - Implement paginated order list (20 per page)
@@ -373,7 +373,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 10.1, 10.8, 10.15_
   - _Complexity: Medium_
 
-- [ ] 38. Implement filter bar component
+- [x] 38. Implement filter bar component
   - Create date range filter (from/to dates)
   - Create status filter (multi-select: submitted, waiting, closed, cancelled)
   - Create outlet filter (dropdown)
@@ -386,41 +386,41 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 4: Filter Application**
   - **Validates: Requirements 2.4, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7**
 
-- [ ] 39. Implement filter logic with AND combination
+- [x] 39. Implement filter logic with AND combination
   - Apply all active filters in combination (AND logic)
   - Update order list when filters change
   - Persist filter state to Zustand store
   - _Requirements: 10.7_
   - _Complexity: Small_
 
-- [ ] 40. Create order card component
+- [x] 40. Create order card component
   - Display order ID, status badge, recipient name, distance, shipping fee
   - Show action buttons: edit, cancel, see detail
   - Implement hover state to show action buttons
   - _Requirements: 10.9_
   - _Complexity: Small_
 
-- [ ] 41. Create order table/row component
+- [x] 41. Create order table/row component
   - Display order data in table format
   - Include columns: ID, status, recipient, distance, fee, date, actions
   - Implement sortable columns
   - _Requirements: 10.8_
   - _Complexity: Small_
 
-- [ ] 42. Implement layout toggle (card/table view)
+- [x] 42. Implement layout toggle (card/table view)
   - Create toggle button to switch between card and table views
   - Persist layout preference to Zustand store
   - _Requirements: 10.8_
   - _Complexity: Small_
 
-- [ ] 43. Implement sorting functionality
+- [x] 43. Implement sorting functionality
   - Add sort by date (ascending/descending)
   - Add sort by status (grouped and sorted)
   - Persist sort preference to Zustand store
   - _Requirements: 10.13, 10.14_
   - _Complexity: Small_
 
-- [ ] 44. Implement pagination
+- [x] 44. Implement pagination
   - Display 20 orders per page
   - Create pagination controls (previous, next, page numbers)
   - Update page when pagination controls clicked
@@ -431,7 +431,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 12: Pagination**
   - **Validates: Requirements 10.1**
 
-- [ ] 45. Implement edit order functionality
+- [x] 45. Implement edit order functionality
   - Create edit button on order cards
   - Open order in edit mode with all fields editable
   - Allow editing only pending orders
@@ -439,7 +439,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 10.10_
   - _Complexity: Medium_
 
-- [ ] 46. Implement cancel order functionality
+- [x] 46. Implement cancel order functionality
   - Create cancel button on order cards
   - Display confirmation dialog before cancelling
   - Mark order as cancelled in storage
@@ -447,14 +447,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 10.11_
   - _Complexity: Small_
 
-- [ ] 47. Implement "See Detail" navigation
+- [x] 47. Implement "See Detail" navigation
   - Create detail button on order cards
   - Navigate to order detail page
   - Preserve filter and sort state for back button
   - _Requirements: 10.12_
   - _Complexity: Small_
 
-- [ ] 48. Checkpoint - Verify order history and filtering
+- [x] 48. Checkpoint - Verify order history and filtering
   - Test all filters work individually
   - Test multiple filters work in combination (AND logic)
   - Test layout toggle switches between card and table
@@ -468,14 +468,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 7: Order Detail View
 
-- [ ] 49. Create order detail page layout
+- [x] 49. Create order detail page layout
   - Display order header with ID, status, creation date
   - Display sections: recipient info, items list, package details, delivery info, shipping fee breakdown
   - Add back button that preserves filter/sort state
   - _Requirements: 11.1, 11.2, 11.7_
   - _Complexity: Medium_
 
-- [ ] 50. Implement order header section
+- [x] 50. Implement order header section
   - Display order ID, status badge with color coding
   - Display creation date and last updated date
   - Show status display text (Shipment Created, Waiting for Pick Up, etc.)
@@ -486,38 +486,38 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 13: Status Badge Colors**
   - **Validates: Requirements 4.7, 11.4**
 
-- [ ] 51. Implement recipient information section
+- [x] 51. Implement recipient information section
   - Display recipient name, phone, email, address
   - Format phone and email as clickable links
   - _Requirements: 11.2_
   - _Complexity: Small_
 
-- [ ] 52. Implement items list section
+- [x] 52. Implement items list section
   - Display all items with description and quantity
   - Show total item count
   - _Requirements: 11.2_
   - _Complexity: Small_
 
-- [ ] 53. Implement package details section
+- [x] 53. Implement package details section
   - Display weight, dimensions (length x width x height), fragile flag
   - Format dimensions clearly
   - _Requirements: 11.2_
   - _Complexity: Small_
 
-- [ ] 54. Implement delivery information section
+- [x] 54. Implement delivery information section
   - Display service type, distance, outlet name
   - Display delivery status and tracking info if available
   - _Requirements: 11.2, 11.6_
   - _Complexity: Small_
 
-- [ ] 55. Implement shipping fee breakdown section
+- [x] 55. Implement shipping fee breakdown section
   - Display base fee, distance, rate, and total
   - Format all values as currency
   - Show calculation formula
   - _Requirements: 11.2, 11.5_
   - _Complexity: Small_
 
-- [ ] 56. Implement map view on order detail
+- [x] 56. Implement map view on order detail
   - Display map showing outlet origin and delivery destination
   - Draw route line between outlet and delivery location
   - Center map appropriately
@@ -528,20 +528,20 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 19: Order Detail Sections**
   - **Validates: Requirements 11.2**
 
-- [ ] 57. Implement back button with state preservation
+- [x] 57. Implement back button with state preservation
   - Create back button that returns to order history
   - Preserve previous filter and sort state
   - Restore scroll position if possible
   - _Requirements: 11.7_
   - _Complexity: Small_
 
-- [ ] 58. Implement data refresh on page load
+- [x] 58. Implement data refresh on page load
   - Fetch latest order data from storage on page load
   - Handle loading and error states
   - _Requirements: 11.8_
   - _Complexity: Small_
 
-- [ ] 59. Checkpoint - Verify order detail view
+- [x] 59. Checkpoint - Verify order detail view
   - Test all sections display correctly
   - Test status badge displays correct color
   - Test map displays with markers and route
@@ -553,14 +553,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 8: Dashboard Implementation
 
-- [ ] 60. Create dashboard page layout
+- [x] 60. Create dashboard page layout
   - Display KPI cards in grid (1 col mobile, 3 col desktop)
   - Display order status distribution chart below KPI cards
   - Display recent activity feed below chart
   - _Requirements: 12.1, 12.5, 12.6, 12.7_
   - _Complexity: Medium_
 
-- [ ] 61. Implement KPI cards component
+- [x] 61. Implement KPI cards component
   - Create card for today's order volume
   - Create card for active shipments count
   - Create card for delivery success rate
@@ -572,14 +572,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 20: Dashboard KPI Calculation**
   - **Validates: Requirements 12.1, 12.2, 12.3, 12.4**
 
-- [ ] 62. Implement order status distribution chart
+- [x] 62. Implement order status distribution chart
   - Create pie or bar chart showing order counts by status
   - Display counts for: submitted, waiting, closed, cancelled
   - Use status colors for chart segments
   - _Requirements: 12.6_
   - _Complexity: Medium_
 
-- [ ] 63. Implement activity feed component
+- [x] 63. Implement activity feed component
   - Display last 10 orders with status, recipient name, timestamp
   - Format timestamps as relative time (e.g., "2 hours ago")
   - Make orders clickable to navigate to detail page
@@ -590,21 +590,21 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 21: Activity Feed Display**
   - **Validates: Requirements 12.7**
 
-- [ ] 64. Implement responsive dashboard layout
+- [x] 64. Implement responsive dashboard layout
   - Stack KPI cards vertically on mobile
   - Adjust chart sizes for mobile readability
   - Adjust activity feed for mobile
   - _Requirements: 12.9_
   - _Complexity: Small_
 
-- [ ] 65. Implement automatic data refresh
+- [x] 65. Implement automatic data refresh
   - Refresh dashboard data every 5 minutes
   - Refresh on page focus (when user returns to tab)
   - Show loading state during refresh
   - _Requirements: 12.10_
   - _Complexity: Small_
 
-- [ ] 66. Checkpoint - Verify dashboard
+- [x] 66. Checkpoint - Verify dashboard
   - Test KPI cards display correct values
   - Test chart displays all statuses
   - Test activity feed shows last 10 orders
@@ -616,7 +616,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 9: Responsive Design and Accessibility
 
-- [ ] 67. Implement responsive design with Tailwind CSS
+- [x] 67. Implement responsive design with Tailwind CSS
   - Use Tailwind responsive classes (sm:, md:, lg:) throughout
   - Test layouts on mobile (320px), tablet (768px), desktop (1024px+)
   - Ensure single column on mobile, multi-column on larger screens
@@ -627,7 +627,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 14: Responsive Layout**
   - **Validates: Requirements 4.1, 4.2, 4.3**
 
-- [ ] 68. Implement tap target sizing
+- [x] 68. Implement tap target sizing
   - Ensure all buttons, form fields, links are at least 44px × 44px
   - Add padding to smaller elements to meet minimum size
   - Test on mobile devices
@@ -638,21 +638,21 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 15: Tap Target Size**
   - **Validates: Requirements 4.4**
 
-- [ ] 69. Implement color scheme and status colors
+- [x] 69. Implement color scheme and status colors
   - Use primary color #ED0577 (magenta) for interactive elements
   - Use status colors: blue for submitted, orange for waiting, green for closed, red for cancelled
   - Apply colors consistently throughout app
   - _Requirements: 4.6, 4.7_
   - _Complexity: Small_
 
-- [ ] 70. Implement focus states and keyboard navigation
+- [x] 70. Implement focus states and keyboard navigation
   - Add visible focus indicators on all interactive elements
   - Ensure keyboard navigation works throughout app
   - Test with keyboard only (no mouse)
   - _Requirements: 4.8_
   - _Complexity: Medium_
 
-- [ ] 71. Implement semantic HTML and ARIA attributes
+- [x] 71. Implement semantic HTML and ARIA attributes
   - Use proper heading hierarchy (h1, h2, h3)
   - Add form labels for all inputs
   - Add ARIA attributes where needed (aria-label, aria-describedby, etc.)
@@ -660,7 +660,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 4.9_
   - _Complexity: Medium_
 
-- [ ] 72. Checkpoint - Verify responsive design and accessibility
+- [x] 72. Checkpoint - Verify responsive design and accessibility
   - Test layout on mobile, tablet, desktop
   - Test all tap targets are at least 44px
   - Test color contrast meets WCAG AA (4.5:1)
@@ -672,28 +672,28 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 10: Performance Optimization
 
-- [ ] 73. Implement code splitting by route
+- [x] 73. Implement code splitting by route
   - Split code for Dashboard, OrderHistory, OrderDetail, OrderCreation routes
   - Load route code on demand using React.lazy and Suspense
   - Show loading indicator while route code loads
   - _Requirements: 13.4_
   - _Complexity: Medium_
 
-- [ ] 74. Implement lazy loading for non-critical components
+- [x] 74. Implement lazy loading for non-critical components
   - Lazy load Google Maps API only when needed (order creation, detail)
   - Lazy load chart library only when dashboard accessed
   - Lazy load images if applicable
   - _Requirements: 13.4_
   - _Complexity: Small_
 
-- [ ] 75. Implement virtual scrolling for long order lists
+- [x] 75. Implement virtual scrolling for long order lists
   - Use virtual scrolling library for order lists with 100+ orders
   - Render only visible items to maintain performance
   - Maintain smooth scrolling at 60 FPS
   - _Requirements: 13.6_
   - _Complexity: Medium_
 
-- [ ] 76. Optimize bundle size and initial load
+- [x] 76. Optimize bundle size and initial load
   - Analyze bundle size with webpack-bundle-analyzer
   - Remove unused dependencies
   - Minify and compress assets
@@ -705,7 +705,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 24: Performance Load Time**
   - **Validates: Requirements 13.1**
 
-- [ ] 77. Implement filter update performance optimization
+- [x] 77. Implement filter update performance optimization
   - Optimize filter logic to update display in under 200ms
   - Use memoization and useMemo hooks
   - Debounce filter input if needed
@@ -716,14 +716,14 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 25: Filter Update Performance**
   - **Validates: Requirements 13.3**
 
-- [ ] 78. Implement caching strategy
+- [x] 78. Implement caching strategy
   - Set appropriate cache headers for static assets
   - Use TanStack Query caching (5 minute stale time)
   - Implement browser cache for images and fonts
   - _Requirements: 13.2_
   - _Complexity: Small_
 
-- [ ] 79. Checkpoint - Verify performance
+- [x] 79. Checkpoint - Verify performance
   - Run Lighthouse audit and verify Performance score >= 90
   - Test initial load time < 3 seconds on 4G
   - Test filter updates < 200ms
@@ -734,7 +734,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
 
 ## Phase 11: Progressive Web App Implementation
 
-- [ ] 80. Create service worker for offline support
+- [x] 80. Create service worker for offline support
   - Register service worker on app load
   - Implement cache-first strategy for static assets (HTML, CSS, JS, fonts)
   - Implement network-first strategy for API calls
@@ -746,21 +746,21 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - **Property 22: Service Worker Registration**
   - **Validates: Requirements 14.1**
 
-- [ ] 81. Implement offline order viewing
+- [x] 81. Implement offline order viewing
   - Allow viewing previously loaded orders when offline
   - Display offline indicator
   - Show cached data with "offline" badge
   - _Requirements: 14.2_
   - _Complexity: Small_
 
-- [ ] 82. Implement offline order creation and queueing
+- [x] 82. Implement offline order creation and queueing
   - Allow creating new orders while offline
   - Queue orders in localStorage for sync
   - Display queued orders with "pending sync" indicator
   - _Requirements: 14.2, 14.3_
   - _Complexity: Medium_
 
-- [ ] 83. Implement automatic sync when connectivity restored
+- [x] 83. Implement automatic sync when connectivity restored
   - Detect when connectivity is restored
   - Automatically sync queued orders to storage
   - Update UI to show sync status
@@ -768,7 +768,7 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 14.3_
   - _Complexity: Medium_
 
-- [ ] 84. Create web app manifest
+- [x] 84. Create web app manifest
   - Define app name: "Pink Pin Merchant"
   - Define short name: "Pink Pin"
   - Add icons: 192px and 512px
@@ -778,21 +778,21 @@ This implementation plan breaks down the Pink Pin Merchant App into discrete, te
   - _Requirements: 14.4, 14.5, 14.6_
   - _Complexity: Small_
 
-- [ ] 85. Implement "Add to Home Screen" prompt
+- [x] 85. Implement "Add to Home Screen" prompt
   - Display prompt on mobile devices
   - Allow users to install app to home screen
   - Handle install success and failure
   - _Requirements: 14.4_
   - _Complexity: Small_
 
-- [ ] 86. Implement splash screen and full-screen mode
+- [x] 86. Implement splash screen and full-screen mode
   - Display splash screen with Pink Pin branding on launch
   - Hide browser address bar in full-screen mode
   - Support standalone mode
   - _Requirements: 14.5, 14.6_
   - _Complexity: Small_
 
-- [ ] 87. Checkpoint - Verify PWA capabilities
+- [x] 87. Checkpoint - Verify PWA capabilities
   - Test service worker registers and caches assets
   - Test offline viewing of orders
   - Test offline order creation and queueing
