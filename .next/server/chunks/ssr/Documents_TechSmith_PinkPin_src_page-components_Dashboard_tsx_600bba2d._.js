@@ -1,3 +1,0 @@
-module.exports=[27675,a=>{"use strict";var b=a.i(1599);function c(){return(0,b.jsxs)("div",{children:[(0,b.jsx)("h1",{className:"text-2xl font-bold text-gray-900 mb-6",children:"Dashboard"}),(0,b.jsx)("p",{className:"text-gray-600",children:"Dashboard content coming soon..."})]})}a.s(["Dashboard",()=>c,"default",0,c])}];
-
-//# sourceMappingURL=Documents_TechSmith_PinkPin_src_page-components_Dashboard_tsx_600bba2d._.js.map
