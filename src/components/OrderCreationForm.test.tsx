@@ -162,7 +162,7 @@ describe('OrderCreationForm - Order Confirmation and Creation', () => {
     fireEvent.click(confirmButton)
 
     // Check that error message is displayed
-    expect(screen.getByText(/Please fill in all required fields/)).toBeTruthy()
+    expect(screen.getByText(/Please correct the following errors/i)).toBeTruthy()
 
     // onSubmit should not be called
     expect(onSubmit).not.toHaveBeenCalled()

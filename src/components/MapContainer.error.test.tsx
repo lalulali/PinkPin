@@ -50,7 +50,7 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByText(/Map failed to load/i)).toBeInTheDocument()
+        expect(screen.getByText(/Map unavailable/i)).toBeInTheDocument()
       })
     })
 
@@ -78,7 +78,7 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
     })
 
@@ -104,7 +104,7 @@ describe('MapContainer - Error Handling and Fallback', () => {
       const { container } = render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        const input = screen.getByPlaceholderText(/e\.g\., 123 Main St/i)
+        const input = screen.getByPlaceholderText(/Enter address/i)
         expect(input).toHaveClass('min-h-[44px]')
       })
     })
@@ -132,11 +132,11 @@ describe('MapContainer - Error Handling and Fallback', () => {
       )
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
 
-      const input = screen.getByPlaceholderText(/e\.g\., 123 Main St/i) as HTMLInputElement
-      const searchButton = screen.getByRole('button', { name: /Search/i })
+      const input = screen.getByPlaceholderText(/Enter address/i) as HTMLInputElement
+      const searchButton = screen.getByRole('button', { name: /Look Up Address/i })
 
       fireEvent.change(input, { target: { value: '123 Main St, New York' } })
       fireEvent.click(searchButton)
@@ -161,17 +161,17 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
 
-      const input = screen.getByPlaceholderText(/e\.g\., 123 Main St/i) as HTMLInputElement
-      const searchButton = screen.getByRole('button', { name: /Search/i })
+      const input = screen.getByPlaceholderText(/Enter address/i) as HTMLInputElement
+      const searchButton = screen.getByRole('button', { name: /Look Up Address/i })
 
       fireEvent.change(input, { target: { value: '123 Main St, New York' } })
       fireEvent.click(searchButton)
 
       await waitFor(() => {
-        expect(screen.getByText(/Address found:/i)).toBeInTheDocument()
+        expect(screen.getByText(/Looking up address/i)).toBeInTheDocument()
       })
     })
 
@@ -188,11 +188,11 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
 
-      const input = screen.getByPlaceholderText(/e\.g\., 123 Main St/i) as HTMLInputElement
-      const searchButton = screen.getByRole('button', { name: /Search/i })
+      const input = screen.getByPlaceholderText(/Enter address/i) as HTMLInputElement
+      const searchButton = screen.getByRole('button', { name: /Look Up Address/i })
 
       fireEvent.change(input, { target: { value: 'invalid address xyz' } })
       fireEvent.click(searchButton)
@@ -216,10 +216,10 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
 
-      const input = screen.getByPlaceholderText(/e\.g\., 123 Main St/i) as HTMLInputElement
+      const input = screen.getByPlaceholderText(/Enter address/i) as HTMLInputElement
 
       fireEvent.change(input, { target: { value: '123 Main St, New York' } })
       fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
@@ -238,11 +238,12 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
 
-      const searchButton = screen.getByRole('button', { name: /Search/i })
-      expect(searchButton).toBeDisabled()
+      // Button is enabled by default (only disabled during geocoding)
+      const searchButton = screen.getByRole('button', { name: /Look Up Address/i })
+      expect(searchButton).not.toBeDisabled()
     })
 
     it('should show loading state while geocoding', async () => {
@@ -266,17 +267,17 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText(/e\.g\., 123 Main St/i)).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/Enter address/i)).toBeInTheDocument()
       })
 
-      const input = screen.getByPlaceholderText(/e\.g\., 123 Main St/i) as HTMLInputElement
-      const searchButton = screen.getByRole('button', { name: /Search/i })
+      const input = screen.getByPlaceholderText(/Enter address/i) as HTMLInputElement
+      const searchButton = screen.getByRole('button', { name: /Look Up Address/i })
 
       fireEvent.change(input, { target: { value: '123 Main St, New York' } })
       fireEvent.click(searchButton)
 
       await waitFor(() => {
-        expect(screen.getByText(/Searching/i)).toBeInTheDocument()
+        expect(screen.getByText(/Looking up address/i)).toBeInTheDocument()
       })
     })
   })
@@ -370,7 +371,7 @@ describe('MapContainer - Error Handling and Fallback', () => {
       render(<MapContainer outlet={mockOutlet} apiKey="test-key" />)
 
       await waitFor(() => {
-        expect(screen.getByText(/Map failed to load/i)).toBeInTheDocument()
+        expect(screen.getByText(/Map unavailable/i)).toBeInTheDocument()
       })
     })
   })

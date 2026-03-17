@@ -1,4 +1,4 @@
-import { StorageAdapter } from './StorageAdapter'
+import { StorageAdapter, StorageError, StorageOperation, isStorageError } from './StorageAdapter'
 import { LocalStorageAdapter } from './LocalStorageAdapter'
 
 let storageAdapter: StorageAdapter | null = null
@@ -22,5 +22,6 @@ export function setStorageAdapter(adapter: StorageAdapter): void {
   storageAdapter = adapter
 }
 
-export type { StorageAdapter } from './StorageAdapter'
+export type { StorageAdapter, StorageOperation } from './StorageAdapter'
+export { StorageError, isStorageError } from './StorageAdapter'
 export { LocalStorageAdapter } from './LocalStorageAdapter'

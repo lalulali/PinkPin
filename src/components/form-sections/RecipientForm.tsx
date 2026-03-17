@@ -29,12 +29,17 @@ export function RecipientForm({
 }: RecipientFormProps) {
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
-  // Validate field on blur
+  // Mark field as touched on blur
   const handleBlur = useCallback((field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }))
   }, [])
 
-  // Get validation error for a field
+  // Mark field as touched on first change
+  const handleChange = useCallback((field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+  }, [])
+
+  // Get validation error for a field (validates on change after touched)
   const getFieldError = useCallback(
     (field: string): string | null => {
       if (!touched[field]) return null
@@ -71,7 +76,10 @@ export function RecipientForm({
           type="text"
           placeholder="Enter recipient name"
           value={name}
-          onChange={(e) => onNameChange(e.target.value)}
+          onChange={(e) => {
+            onNameChange(e.target.value)
+            handleChange('name')
+          }}
           onBlur={() => handleBlur('name')}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] min-h-[44px] transition-colors ${
             nameError ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -95,7 +103,10 @@ export function RecipientForm({
           type="tel"
           placeholder="Enter phone number (e.g., +1 (555) 123-4567)"
           value={phone}
-          onChange={(e) => onPhoneChange(e.target.value)}
+          onChange={(e) => {
+            onPhoneChange(e.target.value)
+            handleChange('phone')
+          }}
           onBlur={() => handleBlur('phone')}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] min-h-[44px] transition-colors ${
             phoneError ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -119,7 +130,10 @@ export function RecipientForm({
           type="email"
           placeholder="Enter email address"
           value={email}
-          onChange={(e) => onEmailChange(e.target.value)}
+          onChange={(e) => {
+            onEmailChange(e.target.value)
+            handleChange('email')
+          }}
           onBlur={() => handleBlur('email')}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] min-h-[44px] transition-colors ${
             emailError ? 'border-red-500 bg-red-50' : 'border-gray-300'

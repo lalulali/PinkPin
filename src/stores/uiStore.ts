@@ -89,8 +89,8 @@ export const useUIStore = create<UIState>()(
       // Pagination
       currentPage: 1,
       itemsPerPage: 20,
-      setCurrentPage: (page) => set({ currentPage: page }),
-      setItemsPerPage: (items) => set({ itemsPerPage: items }),
+      setCurrentPage: (page) => set({ currentPage: Math.max(1, page) }),
+      setItemsPerPage: (items) => set({ itemsPerPage: Math.max(1, items) }),
 
       // UI state
       isLoading: false,

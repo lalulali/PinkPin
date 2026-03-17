@@ -34,8 +34,13 @@ export function PackageForm({
 }: PackageFormProps) {
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
-  // Validate field on blur
+  // Mark field as touched on blur
   const handleBlur = useCallback((field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+  }, [])
+
+  // Mark field as touched on first change
+  const handleChange = useCallback((field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }))
   }, [])
 
@@ -89,7 +94,10 @@ export function PackageForm({
           min="0"
           step="0.1"
           value={weight}
-          onChange={(e) => onWeightChange(parseFloat(e.target.value) || 0)}
+          onChange={(e) => {
+            onWeightChange(parseFloat(e.target.value) || 0)
+            handleChange('weight')
+          }}
           onBlur={() => handleBlur('weight')}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] min-h-[44px] transition-colors ${
             weightError ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -117,7 +125,10 @@ export function PackageForm({
               min="0"
               step="0.1"
               value={length}
-              onChange={(e) => onLengthChange(parseFloat(e.target.value) || 0)}
+              onChange={(e) => {
+                onLengthChange(parseFloat(e.target.value) || 0)
+                handleChange('length')
+              }}
               onBlur={() => handleBlur('length')}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] text-sm transition-colors ${
                 lengthError ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -139,7 +150,10 @@ export function PackageForm({
               min="0"
               step="0.1"
               value={width}
-              onChange={(e) => onWidthChange(parseFloat(e.target.value) || 0)}
+              onChange={(e) => {
+                onWidthChange(parseFloat(e.target.value) || 0)
+                handleChange('width')
+              }}
               onBlur={() => handleBlur('width')}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] text-sm transition-colors ${
                 widthError ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -161,7 +175,10 @@ export function PackageForm({
               min="0"
               step="0.1"
               value={height}
-              onChange={(e) => onHeightChange(parseFloat(e.target.value) || 0)}
+              onChange={(e) => {
+                onHeightChange(parseFloat(e.target.value) || 0)
+                handleChange('height')
+              }}
               onBlur={() => handleBlur('height')}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] text-sm transition-colors ${
                 heightError ? 'border-red-500 bg-red-50' : 'border-gray-300'

@@ -24,9 +24,28 @@ dist-ssr
 *.sw?
 
 # Environment variables
+!.env.example
 .env
 .env.local
 .env.*.local
 
 # Build outputs
 coverage
+*.tsbuildinfo
+
+# OS files
+Thumbs.db
+*.bak
+*~
+~*
+
+# Deployment
+.next
+.vercel
+.netlify
+.vscode
+
+# Cache
+.parcel-cache
+.turbo
+.cache

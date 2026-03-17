@@ -7,6 +7,7 @@ export { useOrderById } from './useOrderById'
 export { useCreateOrder } from './useCreateOrder'
 export { useUpdateOrder } from './useUpdateOrder'
 export { useDeleteOrder } from './useDeleteOrder'
+export { useStorageError } from './useStorageError'
 export {
   useFilters,
   useSort,

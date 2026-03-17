@@ -33,7 +33,7 @@ export function MapContainer({
   outlet,
   deliveryCoordinates,
   onDeliveryLocationSelect,
-  apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+  apiKey = process.env.GOOGLE_MAPS_API_KEY || '',
   className = '',
 }: MapContainerProps) {
   const mapRef = useRef<HTMLDivElement>(null)
@@ -229,13 +229,34 @@ export function MapContainer({
     initializeMap()
   }
 
-  const handleManualAddressSubmit = (_address: string) => {
-    // Geocoding fallback - in a real app, this would use the Geocoding API
-    // For now, we'll just show an error that geocoding requires API setup
-    setError({
-      message: 'Geocoding requires Google Maps Geocoding API. Please select a location on the map.',
-      timestamp: new Date(),
-    })
+  const [isGeocoding, setIsGeocoding] = useState(false)
+  const [geocodingError, setGeocodingError] = useState<string | null>(null)
+
+  const handleManualAddressSubmit = async (address: string) => {
+    if (!address.trim()) {
+      setGeocodingError('Please enter an address')
+      return
+    }
+
+    setIsGeocoding(true)
+    setGeocodingError(null)
+
+    try {
+      const { geocodeAddress } = await import('../utils/geocoding')
+      const result = await geocodeAddress(address)
+      if (onDeliveryLocationSelect) {
+        onDeliveryLocationSelect(result.coordinates)
+      }
+      // Clear error state after successful geocoding
+      setError(null)
+    } catch (err) {
+      const errorMessage = err && typeof err === 'object' && 'message' in err 
+        ? (err as { message: string }).message 
+        : 'Failed to geocode address'
+      setGeocodingError(errorMessage)
+    } finally {
+      setIsGeocoding(false)
+    }
   }
 
   return (
@@ -273,15 +294,45 @@ export function MapContainer({
                 type="text"
                 placeholder="Enter address..."
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED0577] focus:border-[#ED0577] min-h-[44px]"
+                disabled={isGeocoding}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleManualAddressSubmit(e.currentTarget.value)
                   }
                 }}
               />
+              {geocodingError && (
+                <p className="text-sm text-red-600" role="alert">
+                  {geocodingError}
+                </p>
+              )}
+              <button
+                onClick={(e) => {
+                  const input = (e.target as HTMLButtonElement).parentElement?.querySelector('input')
+                  if (input) {
+                    handleManualAddressSubmit(input.value)
+                  }
+                }}
+                disabled={isGeocoding}
+                className="w-full px-4 py-3 bg-[#ED0577] text-white rounded-lg font-medium hover:bg-[#d9066a] transition-colors min-h-[44px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isGeocoding ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Looking up address...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Look Up Address
+                  </>
+                )}
+              </button>
               <button
                 onClick={handleRetry}
-                className="w-full px-4 py-3 bg-[#ED0577] text-white rounded-lg font-medium hover:bg-[#d9066a] transition-colors min-h-[44px] flex items-center justify-center"
+                className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors min-h-[44px] flex items-center justify-center"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

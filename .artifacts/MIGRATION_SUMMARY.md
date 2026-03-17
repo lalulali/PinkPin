@@ -41,7 +41,7 @@ Successfully migrated Pink Pin Merchant App from Vite + React to Next.js 16.1.6 
 
 ### 6. Environment Variables
 - Changed from Vite's `import.meta.env.VITE_*` to Next.js `process.env.NEXT_PUBLIC_*`
-- Updated MapContainer to use `process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+- Updated MapContainer to use `process.env.GOOGLE_MAPS_API_KEY`
 
 ### 7. Import Path Updates
 - Updated all imports to use correct path aliases

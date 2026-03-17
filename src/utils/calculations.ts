@@ -56,3 +56,15 @@ export function calculateShippingFee(distance: number, serviceType: ServiceType)
 export function isDistanceValid(distance: number): boolean {
   return distance <= 3
 }
+
+/**
+ * Format a fee amount as currency string (IDR)
+ * Input is in IDR (e.g., 10000 = 100.00)
+ */
+export function formatCurrency(fee: number): string {
+  const amount = fee / 100
+  return new Intl.NumberFormat('id-ID', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount)
+}

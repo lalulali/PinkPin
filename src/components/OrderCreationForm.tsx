@@ -272,19 +272,48 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
     ]
   )
 
-  const handleConfirmOrder = () => {
-    // Validate form
-    if (!formState.recipientName || !formState.recipientPhone || !formState.recipientEmail || !formState.deliveryCoordinates) {
-      setErrors({
-        form: 'Please fill in all required fields and select a delivery location',
-      })
-      return
+  // Validate entire form and return all errors
+  const validateForm = useCallback(() => {
+    const newErrors: Record<string, string> = {}
+
+    if (!formState.recipientName.trim()) {
+      newErrors.recipientName = 'This field is required'
+    }
+    if (!formState.recipientPhone.trim()) {
+      newErrors.recipientPhone = 'This field is required'
+    } else if (!/^[\d\s\-+()]+$/.test(formState.recipientPhone) || formState.recipientPhone.replace(/\D/g, '').length < 10) {
+      newErrors.recipientPhone = 'Please enter a valid phone number'
+    }
+    if (!formState.recipientEmail.trim()) {
+      newErrors.recipientEmail = 'This field is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.recipientEmail)) {
+      newErrors.recipientEmail = 'Please enter a valid email address'
+    }
+    if (!formState.deliveryCoordinates) {
+      newErrors.deliveryAddress = 'This field is required'
+    }
+    if (formState.items.length === 0) {
+      newErrors.items = 'At least one item is required'
+    }
+    if (distance !== null && !isDistanceValid(distance)) {
+      newErrors.distance = 'Delivery location must be within 3 km radius of the outlet'
     }
 
-    if (distance !== null && !isDistanceValid(distance)) {
-      setErrors({
-        form: 'Delivery location must be within 3 km radius of the outlet',
-      })
+    return newErrors
+  }, [formState, distance])
+
+  // Get all current validation errors for form-level summary
+  const formErrors = validateForm()
+  const hasFormErrors = Object.keys(formErrors).length > 0
+
+  // Get list of invalid fields for summary
+  const invalidFields = Object.keys(formErrors).filter(key => formErrors[key])
+
+  const handleConfirmOrder = () => {
+    // Validate form
+    const validationErrors = validateForm()
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
       return
     }
 
@@ -347,6 +376,35 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
         orderId={createdOrderId}
         onClose={() => setShowConfirmation(false)}
       />
+
+      {/* Form Error Summary */}
+      {hasFormErrors && (
+        <div 
+          className="p-4 bg-red-50 border border-red-200 rounded-lg" 
+          role="alert" 
+          aria-live="polite"
+        >
+          <div className="flex items-start gap-2">
+            <svg 
+              className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div>
+              <p className="text-sm font-medium text-red-800">Please correct the following errors:</p>
+              <ul className="mt-2 text-sm text-red-700 list-disc list-inside space-y-1">
+                {invalidFields.map((field) => (
+                  <li key={field}>{formErrors[field]}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Form Section with Accordion */}
       <div className="lg:col-span-2 space-y-4 sm:space-y-6">

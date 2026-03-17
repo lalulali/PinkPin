@@ -147,18 +147,18 @@ describe('Calculations - Distance Validation', () => {
 
 describe('Calculations - Currency Formatting', () => {
   it('should format fee as currency with 2 decimal places', () => {
-    expect(formatCurrency(10000)).toBe('100.00')
-    expect(formatCurrency(15000)).toBe('150.00')
-    expect(formatCurrency(25000)).toBe('250.00')
+    expect(formatCurrency(10000)).toBe('100,00')
+    expect(formatCurrency(15000)).toBe('150,00')
+    expect(formatCurrency(25000)).toBe('250,00')
   })
 
   it('should include thousand separators for large fees', () => {
-    expect(formatCurrency(100000)).toBe('1,000.00')
-    expect(formatCurrency(150000)).toBe('1,500.00')
-    expect(formatCurrency(1000000)).toBe('10,000.00')
+    expect(formatCurrency(100000)).toBe('1.000,00')
+    expect(formatCurrency(150000)).toBe('1.500,00')
+    expect(formatCurrency(1000000)).toBe('10.000,00')
   })
 
   it('should handle zero fee', () => {
-    expect(formatCurrency(0)).toBe('0.00')
+    expect(formatCurrency(0)).toBe('0,00')
   })
 })
