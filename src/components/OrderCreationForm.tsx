@@ -84,6 +84,7 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [createdOrderId, setCreatedOrderId] = useState<string>('')
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
   const { isOnline: appIsOnline } = useOfflineStore()
 
   // Set up auto-save
@@ -303,14 +304,17 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
     return newErrors
   }, [formState, distance])
 
-  // Get all current validation errors for form-level summary
-  const formErrors = validateForm()
+  // Get all current validation errors for form-level summary (only after submit attempt)
+  const formErrors = hasAttemptedSubmit ? validateForm() : {}
   const hasFormErrors = Object.keys(formErrors).length > 0
 
   // Get list of invalid fields for summary
   const invalidFields = Object.keys(formErrors).filter(key => formErrors[key])
 
   const handleConfirmOrder = () => {
+    // Mark that user has attempted to submit
+    setHasAttemptedSubmit(true)
+
     // Validate form
     const validationErrors = validateForm()
     if (Object.keys(validationErrors).length > 0) {
