@@ -3,7 +3,7 @@
  * Implements Requirements 3.1, 3.5, 3.7
  */
 
-import { Coordinates } from '@/src/types';
+import { Coordinates, Outlet, Order } from '@/src/types';
 import { ErrorCode, createError, Result, success, failure } from './errorHandling';
 
 // ============================================================================
@@ -280,25 +280,6 @@ export function safeCalculateDistance(
   return success(roundedDistance);
 }
 
-/**
- * Format distance for display with edge case handling
- */
-export function formatDistance(distance: number | null | undefined): string {
-  if (distance === null || distance === undefined || Number.isNaN(distance)) {
-    return '- km';
-  }
-
-  if (!Number.isFinite(distance)) {
-    return '- km';
-  }
-
-  if (distance < 0) {
-    return '- km';
-  }
-
-  return `${distance.toFixed(1)} km`;
-}
-
 // ============================================================================
 // Currency Formatting Edge Cases
 // ============================================================================
@@ -520,7 +501,6 @@ export default {
   isDistanceValid,
   validateDistance,
   safeCalculateDistance,
-  formatDistance,
 
   // Currency
   formatCurrencySafe,

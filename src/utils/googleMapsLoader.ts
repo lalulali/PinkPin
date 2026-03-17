@@ -112,57 +112,10 @@ export function createMarker(
   return new google.maps.Marker(defaultOptions)
 }
 
-/**
- * Calculate distance between two points using the Geometry library
- */
-export function calculateDistance(
-  origin: google.maps.LatLngLiteral,
-  destination: google.maps.LatLngLiteral
-): number {
-  if (!window.google?.maps?.geometry?.spherical) {
-    // Fallback: haversine formula
-    return haversineDistance(origin, destination)
-  }
-
-  const from = new google.maps.LatLng(origin.lat, origin.lng)
-  const to = new google.maps.LatLng(destination.lat, destination.lng)
-  const distance = google.maps.geometry.spherical.computeDistanceBetween(from, to)
-
-  // Convert meters to kilometers
-  return distance / 1000
-}
-
-/**
- * Haversine formula for calculating distance between two coordinates
- * Used as fallback when Geometry library is not available
- */
-function haversineDistance(
-  coord1: google.maps.LatLngLiteral,
-  coord2: google.maps.LatLngLiteral
-): number {
-  const R = 6371 // Earth's radius in kilometers
-  const dLat = toRad(coord2.lat - coord1.lat)
-  const dLon = toRad(coord2.lng - coord1.lng)
-  const lat1 = toRad(coord1.lat)
-  const lat2 = toRad(coord2.lat)
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-  return R * c
-}
-
-function toRad(deg: number): number {
-  return deg * (Math.PI / 180)
-}
-
 export default {
   loadGoogleMapsAPI,
   isGoogleMapsLoaded,
   getGoogleMaps,
   createMap,
   createMarker,
-  calculateDistance,
 }

@@ -1,4 +1,4 @@
-import { StorageAdapter, StorageError, StorageOperation, isStorageError } from './StorageAdapter'
+import { StorageAdapter } from './StorageAdapter'
 import { LocalStorageAdapter } from './LocalStorageAdapter'
 
 let storageAdapter: StorageAdapter | null = null

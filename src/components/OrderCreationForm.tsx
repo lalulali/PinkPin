@@ -6,7 +6,8 @@
 
 import { useState, useCallback, useMemo, useEffect, lazy, Suspense } from 'react'
 import { Order, Outlet, Coordinates, ServiceType } from '@/src/types'
-import { calculateDistance, calculateShippingFee, isDistanceValid } from '@/src/utils/calculations'
+import { calculateDistance, calculateShippingFee } from '@/src/utils/calculations'
+import { isDistanceValid } from '@/src/utils/edgeCases'
 import { useAutoSave } from '@/src/hooks/useAutoSave'
 import { useOfflineStore } from '@/src/stores/offlineStore'
 import { queueOrderForSync } from '@/src/services/offlineService'

@@ -1,4 +1,4 @@
-import { fc } from 'fast-check'
+import fc from 'fast-check'
 
 // Generators for common types
 
@@ -55,12 +55,4 @@ export function withSetup<T>(setupFn: () => T, teardownFn?: (value: T) => void) 
 
 export function createMock<T>(overrides: Partial<T> = {}): T {
   return { ...overrides } as T
-}
-
-export function mockFunction<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  implementation?: (...args: Parameters<T>) => ReturnType<T>
-): jest.Mock<ReturnType<T>, Parameters<T>> {
-  const mock = jest.fn(implementation) as unknown as jest.Mock<ReturnType<T>, Parameters<T>>
-  return mock
 }

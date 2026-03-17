@@ -3,8 +3,6 @@
  * Implements Requirements 3.1, 3.5, 3.7
  */
 
-import { Coordinates, Outlet, Order } from '@/src/types'
-
 // Error codes for different error types
 export enum ErrorCode {
   // Validation errors (Requirement 3.1)

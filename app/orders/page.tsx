@@ -1,3 +1,5 @@
+'use client'
+
 import { OrderHistory } from '@/src/page-components/OrderHistory'
 import { ErrorBoundary } from '@/src/components/ErrorBoundary'
 

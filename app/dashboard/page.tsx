@@ -1,3 +1,5 @@
+'use client'
+
 import { Dashboard } from '@/src/page-components/Dashboard'
 import { ErrorBoundary } from '@/src/components/ErrorBoundary'
 

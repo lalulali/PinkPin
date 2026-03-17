@@ -1,3 +1,5 @@
+'use client'
+
 import { ProtectedRoute } from '@/src/components/ProtectedRoute'
 import { MainLayout } from '@/src/components/MainLayout'
 import { ErrorBoundary } from '@/src/components/ErrorBoundary'

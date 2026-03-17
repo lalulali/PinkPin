@@ -31,7 +31,7 @@ function ServiceWorkerUpdateNotification({ onUpdate }: ServiceWorkerUpdateNotifi
 }
 
 export function ServiceWorkerInitializer() {
-  const { isRegistered, isUpdating, skipWaiting } = useServiceWorker()
+  const { isUpdating, skipWaiting } = useServiceWorker()
   const [showUpdateNotification, setShowUpdateNotification] = useState(false)
 
   useEffect(() => {

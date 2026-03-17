@@ -103,7 +103,7 @@ export class AsyncErrorBoundary extends Component<
     hasAsyncError: false,
   }
 
-  public static getDerivedStateFromError(error: Error): AsyncErrorBoundaryState {
+  public static getDerivedStateFromError(_error: Error): AsyncErrorBoundaryState {
     return { hasAsyncError: true }
   }
 

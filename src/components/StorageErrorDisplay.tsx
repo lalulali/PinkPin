@@ -10,9 +10,7 @@ import { EmptyState } from './EmptyState'
 
 interface StorageErrorDisplayProps {
   operation: 'read' | 'write' | 'delete'
-  error?: Error | null
   onRetry?: () => void
-  onFallback?: () => void
 }
 
 /**
@@ -20,9 +18,7 @@ interface StorageErrorDisplayProps {
  */
 export function StorageErrorDisplay({
   operation,
-  error,
   onRetry,
-  onFallback,
 }: StorageErrorDisplayProps) {
   const getErrorMessage = () => {
     switch (operation) {

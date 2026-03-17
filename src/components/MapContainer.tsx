@@ -11,10 +11,10 @@ import {
   loadGoogleMapsAPI,
   createMap,
   createMarker,
-  calculateDistance,
   isGoogleMapsLoaded,
   getGoogleMaps,
 } from '../utils/googleMapsLoader'
+import { calculateDistance } from '../utils/calculations'
 
 interface MapContainerProps {
   outlet: Outlet
