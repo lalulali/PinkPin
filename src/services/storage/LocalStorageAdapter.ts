@@ -262,7 +262,37 @@ export class LocalStorageAdapter implements StorageAdapter {
 
     try {
       const data = localStorage.getItem(OUTLETS_KEY)
-      if (!data) return []
+      if (!data) {
+        // Initialize with dummy data if no outlets exist
+        const dummyOutlets: Outlet[] = [
+          {
+            id: 'outlet-001',
+            merchantId: 'MERCHANT-001',
+            name: 'Jakarta Central Hub',
+            address: 'Jl. Sudirman No. 123, Jakarta Pusat, DKI Jakarta 12190',
+            coordinates: { lat: -6.2088, lng: 106.8456 },
+            createdAt: new Date(),
+          },
+          {
+            id: 'outlet-002',
+            merchantId: 'MERCHANT-001',
+            name: 'Bandung Distribution Center',
+            address: 'Jl. Gatot Subroto No. 456, Bandung, Jawa Barat 40274',
+            coordinates: { lat: -6.9175, lng: 107.6062 },
+            createdAt: new Date(),
+          },
+          {
+            id: 'outlet-003',
+            merchantId: 'MERCHANT-001',
+            name: 'Surabaya East Terminal',
+            address: 'Jl. Ahmad Yani No. 789, Surabaya, Jawa Timur 60188',
+            coordinates: { lat: -7.2575, lng: 112.7521 },
+            createdAt: new Date(),
+          },
+        ]
+        await this.initializeOutlets(dummyOutlets)
+        return dummyOutlets
+      }
 
       try {
         const outlets = JSON.parse(data) as Outlet[]
@@ -284,6 +314,16 @@ export class LocalStorageAdapter implements StorageAdapter {
       const unknownError = error instanceof Error ? error : new Error(String(error))
       logStorageError(operation, unknownError)
       throw new StorageError(operation, unknownError.message, unknownError)
+    }
+  }
+
+  private async initializeOutlets(outlets: Outlet[]): Promise<void> {
+    try {
+      localStorage.setItem(OUTLETS_KEY, JSON.stringify(outlets))
+    } catch (error) {
+      const err = error instanceof Error ? error : new Error(String(error))
+      logStorageError('getOutlets', err)
+      throw new StorageError('getOutlets', err.message, err)
     }
   }
 
