@@ -30,14 +30,14 @@ export function ActivityFeed() {
   if (isLoading) {
     return (
       <section className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-100" aria-busy="true">
-        <div className="h-6 bg-gray-200 rounded w-1/4 mb-6 animate-pulse" />
-        <div className="space-y-3">
+        <div className="h-6 bg-gray-200 rounded w-1/4 mb-4 animate-pulse" />
+        <div className="space-y-1">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-gray-50 rounded-lg animate-pulse min-h-[60px]">
-              <div className="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0" />
+            <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg animate-pulse">
+              <div className="w-8 h-8 bg-gray-200 rounded-full flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <div className="h-4 bg-gray-200 rounded w-1/3 mb-2" />
-                <div className="h-3 bg-gray-200 rounded w-1/4" />
+                <div className="h-3 bg-gray-200 rounded w-1/3 mb-1" />
+                <div className="h-2 bg-gray-200 rounded w-1/4" />
               </div>
             </div>
           ))}
@@ -59,48 +59,48 @@ export function ActivityFeed() {
       </header>
 
       {recentOrders.length === 0 ? (
-        <div className="text-center py-8 text-gray-500" role="status">
+        <div className="text-center py-4 text-gray-500" role="status">
           No recent activity
         </div>
       ) : (
         <nav aria-label="Recent orders">
-          <ul className="space-y-2" role="list">
+          <ul className="space-y-1" role="list">
             {recentOrders.map((order) => (
               <li key={order.id}>
                 <button
                   onClick={() => handleOrderClick(order.id)}
-                  className="w-full flex items-center gap-3 p-3 md:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-left group min-h-[60px]"
+                  className="w-full flex items-start gap-2 p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-left group"
                   aria-label={`Order for ${order.recipient.name}, status: ${STATUS_DISPLAY_MAP[order.status]}, created ${formatRelativeTime(order.createdAt)}`}
                 >
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                     style={{ backgroundColor: `${STATUS_COLORS[order.status]}20` }}
                     aria-hidden="true"
                   >
                     <div
-                      className="w-3 h-3 rounded-full"
+                      className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: STATUS_COLORS[order.status] }}
                     />
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-1">
                       <span
-                        className="text-sm font-medium truncate"
+                        className="text-xs font-medium truncate"
                         style={{ color: STATUS_COLORS[order.status] }}
                       >
                         {STATUS_DISPLAY_MAP[order.status]}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-900 truncate">
+                    <div className="text-xs text-gray-900 truncate">
                       {order.recipient.name}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">
+                    <div className="text-xs text-gray-500">
                       {formatRelativeTime(order.createdAt)}
                     </div>
                   </div>
 
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0" aria-hidden="true" />
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0 mt-0.5" aria-hidden="true" />
                 </button>
               </li>
             ))}

@@ -73,7 +73,7 @@ export function StatusChart() {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8" aria-busy="true">
+      <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-100" aria-busy="true">
         <div className="h-6 bg-gray-200 rounded w-1/3 mb-6 animate-pulse" />
         <div className="flex items-center justify-center">
           <div className="w-48 h-48 rounded-full bg-gray-200 animate-pulse" />
@@ -83,7 +83,7 @@ export function StatusChart() {
   }
 
   return (
-    <section className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-100 mb-8 relative overflow-hidden" aria-labelledby="status-chart-title">
+    <section className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-100 relative overflow-hidden" aria-labelledby="status-chart-title">
       {isRefetching && (
         <div className="absolute inset-0 bg-gray-50/50 flex items-center justify-center z-10" role="status" aria-live="polite">
           <div className="w-8 h-8 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
@@ -96,9 +96,9 @@ export function StatusChart() {
         </h2>
       </header>
 
-      <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-        {/* Pie Chart - smaller on mobile */}
-        <div className="relative w-40 h-40 md:w-48 md:h-48 flex-shrink-0" role="img" aria-label={`Pie chart showing order status distribution. Total: ${total} orders`}>
+      <div className="flex flex-col items-center gap-4">
+        {/* Pie Chart */}
+        <div className="relative w-56 h-56 md:w-64 md:h-64" role="img" aria-label={`Pie chart showing order status distribution. Total: ${total} orders`}>
           <svg
             viewBox="0 0 200 200"
             className="w-full h-full transform -rotate-90"
@@ -127,8 +127,8 @@ export function StatusChart() {
           </div>
         </div>
 
-        {/* Legend - stacked on mobile, 2-col on tablet+ */}
-        <dl className="flex-1 grid grid-cols-2 gap-2 md:gap-3 w-full" aria-label="Order status breakdown">
+        {/* Legend - full width below chart */}
+        <dl className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3" aria-label="Order status breakdown">
           {statusCounts.map((item) => (
             <div
               key={item.status}
@@ -140,7 +140,7 @@ export function StatusChart() {
                 aria-hidden="true"
               />
               <div className="min-w-0">
-                <dt className="text-xs md:text-sm font-medium text-gray-900 truncate">
+                <dt className="text-xs md:text-sm font-medium text-gray-900">
                   {item.label}
                 </dt>
                 <dd className="text-xs text-gray-500">
