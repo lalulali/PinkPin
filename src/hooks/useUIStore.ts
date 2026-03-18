@@ -1,4 +1,4 @@
-import { useUIStore as useStore } from '../stores/uiStore'
+import { useUIStore as useStore, type SortField } from '../stores/uiStore'
 import type { OrderStatus, ServiceType } from '../types'
 
 /**

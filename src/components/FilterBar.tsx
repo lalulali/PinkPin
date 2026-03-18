@@ -65,64 +65,6 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     }
   }, [])
 
-  const handleStatusKeyDown = useCallback(
-    (e: React.KeyboardEvent, statusValue: OrderStatus) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        const newStatuses = filters.statuses.includes(statusValue)
-          ? filters.statuses.filter((s) => s !== statusValue)
-          : [...filters.statuses, statusValue]
-        setStatuses(newStatuses)
-        handleFilterUpdate()
-      }
-      // Arrow key navigation
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault()
-        const currentIndex = statusOptions.findIndex((s) => s.value === statusValue)
-        const nextIndex = (currentIndex + 1) % statusOptions.length
-        const nextOption = document.querySelector(`[data-status-option="${statusOptions[nextIndex].value}"]`) as HTMLElement
-        nextOption?.focus()
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault()
-        const currentIndex = statusOptions.findIndex((s) => s.value === statusValue)
-        const prevIndex = (currentIndex - 1 + statusOptions.length) % statusOptions.length
-        const prevOption = document.querySelector(`[data-status-option="${statusOptions[prevIndex].value}"]`) as HTMLElement
-        prevOption?.focus()
-      }
-    },
-    [filters.statuses, setStatuses, handleFilterUpdate]
-  )
-
-  const handleServiceTypeKeyDown = useCallback(
-    (e: React.KeyboardEvent, serviceValue: ServiceType) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        const newTypes = filters.serviceTypes.includes(serviceValue)
-          ? filters.serviceTypes.filter((t) => t !== serviceValue)
-          : [...filters.serviceTypes, serviceValue]
-        setServiceTypes(newTypes)
-        handleFilterUpdate()
-      }
-      // Arrow key navigation
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault()
-        const currentIndex = serviceTypeOptions.findIndex((s) => s.value === serviceValue)
-        const nextIndex = (currentIndex + 1) % serviceTypeOptions.length
-        const nextOption = document.querySelector(`[data-service-option="${serviceTypeOptions[nextIndex].value}"]`) as HTMLElement
-        nextOption?.focus()
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault()
-        const currentIndex = serviceTypeOptions.findIndex((s) => s.value === serviceValue)
-        const prevIndex = (currentIndex - 1 + serviceTypeOptions.length) % serviceTypeOptions.length
-        const prevOption = document.querySelector(`[data-service-option="${serviceTypeOptions[prevIndex].value}"]`) as HTMLElement
-        prevOption?.focus()
-      }
-    },
-    [filters.serviceTypes, setServiceTypes, handleFilterUpdate]
-  )
-
   // Memoize hasActiveFilters to prevent unnecessary re-renders
   const hasActiveFilters = useMemo(
     () =>
@@ -147,29 +89,6 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     const d = new Date(filters.dateRange.to)
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
   }, [filters.dateRange.to])
-
-  // Memoized handlers
-  const handleStatusClick = useCallback(
-    (statusValue: OrderStatus) => {
-      const newStatuses = filters.statuses.includes(statusValue)
-        ? filters.statuses.filter((s) => s !== statusValue)
-        : [...filters.statuses, statusValue]
-      setStatuses(newStatuses)
-      handleFilterUpdate()
-    },
-    [filters.statuses, setStatuses, handleFilterUpdate]
-  )
-
-  const handleServiceTypeClick = useCallback(
-    (serviceValue: ServiceType) => {
-      const newTypes = filters.serviceTypes.includes(serviceValue)
-        ? filters.serviceTypes.filter((t) => t !== serviceValue)
-        : [...filters.serviceTypes, serviceValue]
-      setServiceTypes(newTypes)
-      handleFilterUpdate()
-    },
-    [filters.serviceTypes, setServiceTypes, handleFilterUpdate]
-  )
 
   const handleOutletChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {

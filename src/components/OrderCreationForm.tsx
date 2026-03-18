@@ -361,9 +361,6 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
     return newErrors
   }, [formState, distance])
 
-  // Get all current validation errors for form-level summary (only after submit attempt)
-  const formErrors = hasAttemptedSubmit ? validateForm() : {}
-
   const handleConfirmOrder = () => {
     // Mark that user has attempted to submit
     setHasAttemptedSubmit(true)

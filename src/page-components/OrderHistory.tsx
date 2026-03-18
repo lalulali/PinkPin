@@ -14,7 +14,6 @@ import { OrderCard } from '@/src/components/OrderCard'
 import { OrderTableRow } from '@/src/components/OrderTableRow'
 import { Pagination } from '@/src/components/Pagination'
 import { EmptyState } from '@/src/components/EmptyState'
-import { Order } from '@/src/types'
 
 const ITEMS_PER_PAGE = 20
 
@@ -103,9 +102,9 @@ export function OrderHistory() {
   // Handle sort column click
   const handleSort = (field: 'createdAt' | 'recipient' | 'fee' | 'distance') => {
     if (sort.field === field) {
-      setSort(field, sort.direction === 'asc' ? 'desc' : 'asc')
+      setSort({ field, direction: sort.direction === 'asc' ? 'desc' : 'asc' })
     } else {
-      setSort(field, 'desc') // Default to descending for new sort
+      setSort({ field, direction: 'desc' }) // Default to descending for new sort
     }
   }
 
@@ -157,7 +156,7 @@ export function OrderHistory() {
           aria-label="Orders in card view"
         >
           {paginatedOrders.map((order) => (
-            <OrderCard key={order.id} order={order} role="listitem" />
+            <OrderCard key={order.id} order={order} />
           ))}
         </div>
       ) : (
