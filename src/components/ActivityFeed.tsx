@@ -39,7 +39,7 @@ export function ActivityFeed() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
                     <div className="h-3 bg-gray-300 rounded w-1/3" />
-                    <div className="px-2 py-0.5 bg-gray-300 rounded-full" />
+                    <div className="w-5 h-5 bg-gray-300 rounded-full" />
                   </div>
                   <div className="h-3 bg-gray-300 rounded w-1/2 mb-1" />
                   <div className="h-2 bg-gray-300 rounded w-1/4" />
@@ -91,17 +91,10 @@ export function ActivityFeed() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-0.5">
-                      <span
-                        className="text-xs font-semibold truncate"
-                        style={{ color: STATUS_COLORS[order.status] }}
-                      >
-                        {STATUS_DISPLAY_MAP[order.status]}
-                      </span>
-                      {/* Aesthetic number badge */}
-                      <div className="px-2 py-0.5 bg-gradient-to-r from-[#ED0577] to-[#f73a9f] text-white rounded-full flex items-center justify-center text-[11px] font-semibold ml-2 shadow-sm border border-[#ED0577]/30">
-                        #{index + 1}
-                      </div>
+                    <div className="text-xs font-semibold truncate mb-0.5"
+                      style={{ color: STATUS_COLORS[order.status] }}
+                    >
+                      {STATUS_DISPLAY_MAP[order.status]}
                     </div>
                     <div className="text-xs font-medium text-gray-900 truncate">
                       {order.recipient.name}
@@ -110,6 +103,13 @@ export function ActivityFeed() {
                       <Clock className="w-2.5 h-2.5" />
                       {formatRelativeTime(order.createdAt)}
                     </div>
+                  </div>
+
+                  {/* Subtle number on the right */}
+                  <div className="flex flex-col items-center justify-center flex-shrink-0 ml-2">
+                    <span className="text-2xl font-light text-gray-300 leading-none">
+                      {index + 1}
+                    </span>
                   </div>
 
                   {/* Centered right caret */}
