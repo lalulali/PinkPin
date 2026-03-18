@@ -1,5 +1,6 @@
 /**
  * AuthContext - React Context for authentication state management
+ * Includes cross-tab synchronization for multi-tab authentication
  */
 
 'use client'
@@ -8,6 +9,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useMemo, R
 import { AuthState, AuthContextValue, LoginCredentials } from '../types/auth'
 import { authService } from '../services/authService'
 import { initializeSampleData } from '../services/sampleData'
+import { startSessionHeartbeat, stopSessionHeartbeat } from '../utils/sessionHeartbeat'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -27,33 +29,62 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [state, setState] = useState<AuthState>(initialState)
 
   // Initialize auth state from storage
-  useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        // Initialize sample data on first app load
-        initializeSampleData()
+  const initializeAuth = useCallback(async () => {
+    try {
+      // Initialize sample data on first app load
+      initializeSampleData()
 
-        const isValid = await authService.validateToken()
-        if (isValid) {
-          const user = authService.getCurrentUser()
-          const token = authService.getToken()
-          setState({
-            user,
-            token,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null,
-          })
-        } else {
-          setState((prev) => ({ ...prev, isLoading: false }))
-        }
-      } catch {
+      const isValid = await authService.validateToken()
+      if (isValid) {
+        const user = authService.getCurrentUser()
+        const token = authService.getToken()
+        setState({
+          user,
+          token,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        })
+        // Start session heartbeat if already authenticated
+        startSessionHeartbeat()
+      } else {
         setState((prev) => ({ ...prev, isLoading: false }))
       }
+    } catch {
+      setState((prev) => ({ ...prev, isLoading: false }))
     }
-
-    initializeAuth()
   }, [])
+
+  // Handle cross-tab storage synchronization
+  const handleStorageChange = useCallback((event: StorageEvent) => {
+    if (event.key === 'pinkpin_auth_token' || event.key === 'pinkpin_auth_user') {
+      // Auth data changed in another tab, re-initialize
+      initializeAuth()
+    }
+  }, [initializeAuth])
+
+  // Set up cross-tab synchronization
+  useEffect(() => {
+    // Listen for storage changes from other tabs
+    window.addEventListener('storage', handleStorageChange)
+    
+    // Also check for auth changes periodically (every 5 seconds)
+    const intervalId = setInterval(() => {
+      if (!state.isLoading) {
+        initializeAuth()
+      }
+    }, 5000)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      clearInterval(intervalId)
+    }
+  }, [handleStorageChange, state.isLoading, initializeAuth])
+
+  // Initial auth initialization
+  useEffect(() => {
+    initializeAuth()
+  }, [initializeAuth])
 
   // Set up activity listeners to refresh session
   useEffect(() => {
@@ -89,6 +120,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isLoading: false,
         error: null,
       })
+      // Start session heartbeat after successful login
+      startSessionHeartbeat()
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Login failed'
       setState((prev) => ({
@@ -109,6 +142,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       isLoading: false,
       error: null,
     })
+    // Stop session heartbeat on logout
+    stopSessionHeartbeat()
   }, [])
 
   const validateToken = useCallback(async () => {
@@ -121,6 +156,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user: null,
         token: null,
       }))
+      // Stop heartbeat if token is invalid
+      stopSessionHeartbeat()
+    } else if (isValid && !state.isAuthenticated) {
+      // Token is valid but state wasn't set, update state
+      const user = authService.getCurrentUser()
+      const token = authService.getToken()
+      setState({
+        user,
+        token,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      })
+      // Start heartbeat
+      startSessionHeartbeat()
     }
     return isValid
   }, [state.isAuthenticated])

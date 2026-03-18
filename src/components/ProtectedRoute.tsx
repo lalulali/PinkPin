@@ -1,11 +1,12 @@
 /**
  * ProtectedRoute - Route wrapper that checks authentication
  * Redirects unauthenticated users to login page with preserved return URL
+ * Includes improved handling for multi-tab scenarios
  */
 
 'use client'
 
-import { useEffect, ReactNode } from 'react'
+import { useEffect, ReactNode, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from '../context/AuthContext'
 
@@ -18,29 +19,46 @@ interface ProtectedRouteProps {
  * - Checks if a valid authentication token exists
  * - If no token, redirects to /login with the current path preserved as return URL
  * - If authenticated, renders the child components
+ * - Includes debounced redirect to prevent race conditions
  */
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading, validateToken } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
+  const [hasCheckedAuth, setHasCheckedAuth] = useState(false)
+  const [redirectAttempted, setRedirectAttempted] = useState(false)
 
-  // Validate token on mount
+  // Validate token on mount and when auth state changes
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      validateToken()
+    const checkAuth = async () => {
+      if (!isLoading) {
+        await validateToken()
+        setHasCheckedAuth(true)
+      }
     }
-  }, [isLoading, isAuthenticated, validateToken])
+    
+    checkAuth()
+  }, [isLoading, validateToken])
 
-  // Redirect to login if not authenticated
+  // Debounced redirect to prevent race conditions
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      const returnUrl = encodeURIComponent(pathname)
-      router.push(`/login?returnTo=${returnUrl}`)
+    if (!hasCheckedAuth || isLoading || redirectAttempted) {
+      return
     }
-  }, [isLoading, isAuthenticated, pathname, router])
+
+    const timer = setTimeout(() => {
+      if (!isAuthenticated) {
+        const returnUrl = encodeURIComponent(pathname)
+        setRedirectAttempted(true)
+        router.push(`/login?returnTo=${returnUrl}`)
+      }
+    }, 100) // Small delay to ensure auth state is stable
+
+    return () => clearTimeout(timer)
+  }, [isAuthenticated, isLoading, hasCheckedAuth, pathname, router, redirectAttempted])
 
   // Show loading state while checking authentication
-  if (isLoading) {
+  if (isLoading || !hasCheckedAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">

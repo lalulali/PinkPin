@@ -98,16 +98,58 @@ function validateCredentials(credentials: LoginCredentials): { valid: boolean; u
 }
 
 /**
- * Store token securely in localStorage
+ * Check if localStorage is available
+ */
+function isLocalStorageAvailable(): boolean {
+  try {
+    const testKey = '__test__'
+    localStorage.setItem(testKey, testKey)
+    localStorage.removeItem(testKey)
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Broadcast auth changes to other tabs
+ */
+function broadcastAuthChange(): void {
+  if (!isLocalStorageAvailable()) {
+    return
+  }
+  
+  // Create a custom event to notify other tabs
+  const event = new StorageEvent('storage', {
+    key: TOKEN_KEY,
+    newValue: localStorage.getItem(TOKEN_KEY),
+    oldValue: localStorage.getItem(TOKEN_KEY),
+    storageArea: localStorage,
+    url: window.location.href
+  })
+  
+  // Dispatch the event to trigger storage listeners in other tabs
+  window.dispatchEvent(event)
+}
+
+/**
+ * Store token securely in localStorage and broadcast change
  */
 function storeToken(token: AuthToken): void {
+  if (!isLocalStorageAvailable()) {
+    return
+  }
   localStorage.setItem(TOKEN_KEY, JSON.stringify(token))
+  broadcastAuthChange()
 }
 
 /**
  * Retrieve token from localStorage
  */
 function getStoredToken(): AuthToken | null {
+  if (!isLocalStorageAvailable()) {
+    return null
+  }
   const stored = localStorage.getItem(TOKEN_KEY)
   if (!stored) return null
   try {
@@ -122,16 +164,23 @@ function getStoredToken(): AuthToken | null {
 }
 
 /**
- * Store user in localStorage
+ * Store user in localStorage and broadcast change
  */
 function storeUser(user: AuthUser): void {
+  if (!isLocalStorageAvailable()) {
+    return
+  }
   localStorage.setItem(USER_KEY, JSON.stringify(user))
+  broadcastAuthChange()
 }
 
 /**
  * Retrieve user from localStorage
  */
 function getStoredUser(): AuthUser | null {
+  if (!isLocalStorageAvailable()) {
+    return null
+  }
   const stored = localStorage.getItem(USER_KEY)
   if (!stored) return null
   try {
@@ -142,11 +191,15 @@ function getStoredUser(): AuthUser | null {
 }
 
 /**
- * Clear all auth data from localStorage
+ * Clear all auth data from localStorage and broadcast change
  */
 function clearAuthData(): void {
+  if (!isLocalStorageAvailable()) {
+    return
+  }
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(USER_KEY)
+  broadcastAuthChange()
 }
 
 /**
