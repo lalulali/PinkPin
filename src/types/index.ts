@@ -12,6 +12,8 @@ export type OrderStatusDisplay =
 
 export type ServiceType = 'standard' | 'express' | 'same-day'
 
+export type SortField = 'date' | 'status' | 'createdAt' | 'recipient' | 'fee' | 'distance'
+
 export interface Coordinates {
   lat: number
   lng: number

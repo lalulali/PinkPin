@@ -65,64 +65,6 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     }
   }, [])
 
-  const handleStatusKeyDown = useCallback(
-    (e: React.KeyboardEvent, statusValue: OrderStatus) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        const newStatuses = filters.statuses.includes(statusValue)
-          ? filters.statuses.filter((s) => s !== statusValue)
-          : [...filters.statuses, statusValue]
-        setStatuses(newStatuses)
-        handleFilterUpdate()
-      }
-      // Arrow key navigation
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault()
-        const currentIndex = statusOptions.findIndex((s) => s.value === statusValue)
-        const nextIndex = (currentIndex + 1) % statusOptions.length
-        const nextOption = document.querySelector(`[data-status-option="${statusOptions[nextIndex].value}"]`) as HTMLElement
-        nextOption?.focus()
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault()
-        const currentIndex = statusOptions.findIndex((s) => s.value === statusValue)
-        const prevIndex = (currentIndex - 1 + statusOptions.length) % statusOptions.length
-        const prevOption = document.querySelector(`[data-status-option="${statusOptions[prevIndex].value}"]`) as HTMLElement
-        prevOption?.focus()
-      }
-    },
-    [filters.statuses, setStatuses, handleFilterUpdate]
-  )
-
-  const handleServiceTypeKeyDown = useCallback(
-    (e: React.KeyboardEvent, serviceValue: ServiceType) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        const newTypes = filters.serviceTypes.includes(serviceValue)
-          ? filters.serviceTypes.filter((t) => t !== serviceValue)
-          : [...filters.serviceTypes, serviceValue]
-        setServiceTypes(newTypes)
-        handleFilterUpdate()
-      }
-      // Arrow key navigation
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault()
-        const currentIndex = serviceTypeOptions.findIndex((s) => s.value === serviceValue)
-        const nextIndex = (currentIndex + 1) % serviceTypeOptions.length
-        const nextOption = document.querySelector(`[data-service-option="${serviceTypeOptions[nextIndex].value}"]`) as HTMLElement
-        nextOption?.focus()
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault()
-        const currentIndex = serviceTypeOptions.findIndex((s) => s.value === serviceValue)
-        const prevIndex = (currentIndex - 1 + serviceTypeOptions.length) % serviceTypeOptions.length
-        const prevOption = document.querySelector(`[data-service-option="${serviceTypeOptions[prevIndex].value}"]`) as HTMLElement
-        prevOption?.focus()
-      }
-    },
-    [filters.serviceTypes, setServiceTypes, handleFilterUpdate]
-  )
-
   // Memoize hasActiveFilters to prevent unnecessary re-renders
   const hasActiveFilters = useMemo(
     () =>
@@ -147,29 +89,6 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     const d = new Date(filters.dateRange.to)
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
   }, [filters.dateRange.to])
-
-  // Memoized handlers
-  const handleStatusClick = useCallback(
-    (statusValue: OrderStatus) => {
-      const newStatuses = filters.statuses.includes(statusValue)
-        ? filters.statuses.filter((s) => s !== statusValue)
-        : [...filters.statuses, statusValue]
-      setStatuses(newStatuses)
-      handleFilterUpdate()
-    },
-    [filters.statuses, setStatuses, handleFilterUpdate]
-  )
-
-  const handleServiceTypeClick = useCallback(
-    (serviceValue: ServiceType) => {
-      const newTypes = filters.serviceTypes.includes(serviceValue)
-        ? filters.serviceTypes.filter((t) => t !== serviceValue)
-        : [...filters.serviceTypes, serviceValue]
-      setServiceTypes(newTypes)
-      handleFilterUpdate()
-    },
-    [filters.serviceTypes, setServiceTypes, handleFilterUpdate]
-  )
 
   const handleOutletChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -232,33 +151,34 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
       {/* Filter content */}
       <div
         id="filter-content"
-        className={`${isExpanded || 'hidden md:block'} p-3 sm:p-4 space-y-3 sm:space-y-4`}
+        className={`${isExpanded || 'hidden md:block'} p-2 sm:p-3 space-y-2 sm:space-y-3`}
         role="region"
         aria-label="Filter options"
       >
-        {/* Invoice number search */}
-        <div>
-          <label htmlFor="invoice-search" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            Invoice Number
-          </label>
-          <input
-            type="text"
-            id="invoice-search"
-            placeholder="Search invoice..."
-            value={invoiceInputValue}
-            onChange={handleInvoiceChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent min-h-[44px] text-sm"
-            aria-describedby="invoice-search-hint"
-          />
-          <p id="invoice-search-hint" className="sr-only">
-            Enter invoice number to filter orders
-          </p>
-        </div>
-
-        {/* Date range */}
-        <div className="grid grid-cols-2 gap-2 sm:gap-4">
+        {/* Row 1: Invoice, Date Range, Status */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {/* Invoice number search */}
           <div>
-            <label htmlFor="date-from" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="invoice-search" className="block text-xs font-medium text-gray-700 mb-0.5">
+              Invoice
+            </label>
+            <input
+              type="text"
+              id="invoice-search"
+              placeholder="Search..."
+              value={invoiceInputValue}
+              onChange={handleInvoiceChange}
+              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              aria-describedby="invoice-search-hint"
+            />
+            <p id="invoice-search-hint" className="sr-only">
+              Enter invoice number to filter orders
+            </p>
+          </div>
+
+          {/* Date From */}
+          <div>
+            <label htmlFor="date-from" className="block text-xs font-medium text-gray-700 mb-0.5">
               From
             </label>
             <input
@@ -266,11 +186,13 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               id="date-from"
               value={dateFromValue}
               onChange={handleDateFromChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent min-h-[44px] text-sm"
+              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
             />
           </div>
+
+          {/* Date To */}
           <div>
-            <label htmlFor="date-to" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="date-to" className="block text-xs font-medium text-gray-700 mb-0.5">
               To
             </label>
             <input
@@ -278,98 +200,99 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               id="date-to"
               value={dateToValue}
               onChange={handleDateToChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent min-h-[44px] text-sm"
+              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
             />
+          </div>
+
+          {/* Status dropdown */}
+          <div>
+            <label htmlFor="status-filter" className="block text-xs font-medium text-gray-700 mb-0.5">
+              Status
+            </label>
+            <select
+              id="status-filter"
+              multiple
+              value={filters.statuses}
+              onChange={(e) => {
+                const selected = Array.from(e.target.selectedOptions, (option) => option.value as OrderStatus)
+                setStatuses(selected)
+                handleFilterUpdate()
+              }}
+              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              aria-label="Filter by status"
+            >
+              {statusOptions.map((status) => (
+                <option key={status.value} value={status.value}>
+                  {status.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        {/* Status filter */}
-        <div>
-          <fieldset>
-            <legend className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-              Status
-            </legend>
-            <div className="flex flex-wrap gap-1.5 sm:gap-2" role="group" aria-label="Status filter options">
-              {statusOptions.map((status) => (
-                <button
-                  key={status.value}
-                  data-status-option={status.value}
-                  onClick={() => handleStatusClick(status.value)}
-                  onKeyDown={(e) => handleStatusKeyDown(e, status.value)}
-                  className={`px-2.5 sm:px-3 py-2 text-xs sm:text-sm rounded-full transition-colors min-h-[44px] ${
-                    filters.statuses.includes(status.value)
-                      ? 'bg-[#ED0577] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                  aria-pressed={filters.statuses.includes(status.value)}
-                >
-                  {status.label}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-        </div>
-
-        {/* Service type filter */}
-        <div>
-          <fieldset>
-            <legend className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+        {/* Row 2: Service Type, Outlet, Reset */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {/* Service type dropdown */}
+          <div>
+            <label htmlFor="service-filter" className="block text-xs font-medium text-gray-700 mb-0.5">
               Service Type
-            </legend>
-            <div className="flex flex-wrap gap-1.5 sm:gap-2" role="group" aria-label="Service type filter options">
+            </label>
+            <select
+              id="service-filter"
+              multiple
+              value={filters.serviceTypes}
+              onChange={(e) => {
+                const selected = Array.from(e.target.selectedOptions, (option) => option.value as ServiceType)
+                setServiceTypes(selected)
+                handleFilterUpdate()
+              }}
+              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              aria-label="Filter by service type"
+            >
               {serviceTypeOptions.map((service) => (
-                <button
-                  key={service.value}
-                  data-service-option={service.value}
-                  onClick={() => handleServiceTypeClick(service.value)}
-                  onKeyDown={(e) => handleServiceTypeKeyDown(e, service.value)}
-                  className={`px-2.5 sm:px-3 py-2 text-xs sm:text-sm rounded-full transition-colors min-h-[44px] ${
-                    filters.serviceTypes.includes(service.value)
-                      ? 'bg-[#ED0577] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                  aria-pressed={filters.serviceTypes.includes(service.value)}
-                >
+                <option key={service.value} value={service.value}>
                   {service.label}
-                </button>
+                </option>
               ))}
+            </select>
+          </div>
+
+          {/* Outlet filter */}
+          <div>
+            <label htmlFor="outlet-filter" className="block text-xs font-medium text-gray-700 mb-0.5">
+              Outlet
+            </label>
+            <select
+              id="outlet-filter"
+              value={filters.outletId || ''}
+              onChange={handleOutletChange}
+              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+            >
+              <option value="">All Outlets</option>
+              {outlets.map((outlet) => (
+                <option key={outlet.id} value={outlet.id}>
+                  {outlet.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Reset button */}
+          {hasActiveFilters && (
+            <div className="flex items-end">
+              <button
+                onClick={handleReset}
+                className="w-full px-2 py-1.5 text-xs text-gray-600 hover:text-[#ED0577] hover:bg-gray-50 border border-gray-300 rounded transition-colors flex items-center justify-center gap-1"
+                aria-label="Clear all filters"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Clear
+              </button>
             </div>
-          </fieldset>
+          )}
         </div>
-
-        {/* Outlet filter */}
-        <div>
-          <label htmlFor="outlet-filter" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            Outlet
-          </label>
-          <select
-            id="outlet-filter"
-            value={filters.outletId || ''}
-            onChange={handleOutletChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent min-h-[44px] text-sm"
-          >
-            <option value="">All Outlets</option>
-            {outlets.map((outlet) => (
-              <option key={outlet.id} value={outlet.id}>
-                {outlet.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Reset button */}
-        {hasActiveFilters && (
-          <button
-            onClick={handleReset}
-            className="px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-600 hover:text-[#ED0577] transition-colors min-h-[44px] flex items-center"
-            aria-label="Clear all filters"
-          >
-            <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            Clear Filters
-          </button>
-        )}
       </div>
     </div>
   )

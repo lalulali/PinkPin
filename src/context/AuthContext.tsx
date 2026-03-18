@@ -7,6 +7,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
 import { AuthState, AuthContextValue, LoginCredentials } from '../types/auth'
 import { authService } from '../services/authService'
+import { initializeSampleData } from '../services/sampleData'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -29,6 +30,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
+        // Initialize sample data on first app load
+        initializeSampleData()
+
         const isValid = await authService.validateToken()
         if (isValid) {
           const user = authService.getCurrentUser()

@@ -13,8 +13,10 @@ export interface UIFilters {
   invoiceNumber: string
 }
 
+export type SortField = 'date' | 'status' | 'createdAt' | 'recipient' | 'fee' | 'distance'
+
 export interface UISort {
-  field: 'date' | 'status'
+  field: SortField
   direction: 'asc' | 'desc'
 }
 
@@ -57,7 +59,7 @@ const defaultFilters: UIFilters = {
 }
 
 const defaultSort: UISort = {
-  field: 'date',
+  field: 'createdAt',
   direction: 'desc',
 }
 

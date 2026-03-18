@@ -34,7 +34,7 @@ export const useSort = () => {
   return {
     sort,
     setSort,
-    setSortField: (field: 'date' | 'status') =>
+    setSortField: (field: SortField) =>
       setSort({ ...sort, field }),
     setSortDirection: (direction: 'asc' | 'desc') =>
       setSort({ ...sort, direction }),
