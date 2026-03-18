@@ -6,7 +6,7 @@ This implementation plan outlines the migration of 12 UI components to shadcn/ui
 
 ## Tasks
 
-- [ ] 1. Set up shadcn/ui infrastructure
+- [-] 1. Set up shadcn/ui infrastructure
   - [ ] 1.1 Initialize shadcn/ui in the project
     - Run `npx shadcn@latest init` to set up configuration
     - Configure `components.json` with project settings
