@@ -14,6 +14,7 @@ export interface AccordionSection {
   title: string
   content: React.ReactNode
   isValid?: boolean
+  hasErrors?: boolean
 }
 
 interface FormAccordionProps {
@@ -52,7 +53,13 @@ export function FormAccordion({ sections, defaultOpenSection }: FormAccordionPro
           >
             <div className="flex items-center gap-2 sm:gap-3">
               <span className="text-base sm:text-lg font-semibold text-gray-900">{section.title}</span>
-              {section.isValid !== undefined && (
+              {section.hasErrors && (
+                <span
+                  className="w-2 h-2 rounded-full bg-red-500"
+                  aria-label="Section has errors"
+                />
+              )}
+              {!section.hasErrors && section.isValid !== undefined && (
                 <span
                   className={`w-2 h-2 rounded-full ${
                     section.isValid ? 'bg-green-500' : 'bg-gray-300'

@@ -180,6 +180,24 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
     }))
   }
 
+  // Check which sections have errors
+  const getSectionErrors = useCallback((sectionId: string): boolean => {
+    if (!hasAttemptedSubmit) return false
+    
+    switch (sectionId) {
+      case 'recipient':
+        return !!(errors.recipientName || errors.recipientPhone || errors.recipientEmail || errors.deliveryAddress || errors.distance)
+      case 'items':
+        return !!errors.items
+      case 'package':
+        return !!(errors.weight || errors.length || errors.width || errors.height)
+      case 'delivery':
+        return !!errors.distance
+      default:
+        return false
+    }
+  }, [errors, hasAttemptedSubmit])
+
   // Build accordion sections
   const accordionSections: AccordionSection[] = useMemo(
     () => [
@@ -187,6 +205,7 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
         id: 'outlet',
         title: 'Outlet Selection',
         isValid: !!formState.outletId,
+        hasErrors: getSectionErrors('outlet'),
         content: (
           <OutletSelection
             outlets={outlets}
@@ -202,17 +221,28 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
           !!formState.recipientName &&
           !!formState.recipientPhone &&
           !!formState.recipientEmail &&
-          !!formState.deliveryCoordinates,
+          !!(formState.deliveryCoordinates || distance),
+        hasErrors: getSectionErrors('recipient'),
         content: (
           <RecipientForm
             name={formState.recipientName}
             phone={formState.recipientPhone}
             email={formState.recipientEmail}
             address={formState.recipientAddress}
+            distance={distance}
             onNameChange={(value) => setFormState((prev) => ({ ...prev, recipientName: value }))}
             onPhoneChange={(value) => setFormState((prev) => ({ ...prev, recipientPhone: value }))}
             onEmailChange={(value) => setFormState((prev) => ({ ...prev, recipientEmail: value }))}
+            onAddressChange={(value) => setFormState((prev) => ({ ...prev, recipientAddress: value }))}
+            onDistanceChange={(value) => {
+              setDistance(value)
+              if (value > 0) {
+                const fee = calculateShippingFee(value, formState.serviceType)
+                setShippingFee(fee)
+              }
+            }}
             errors={errors}
+            showErrors={hasAttemptedSubmit}
           />
         ),
       },
@@ -220,18 +250,23 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
         id: 'items',
         title: 'Items',
         isValid: formState.items.length > 0,
+        hasErrors: getSectionErrors('items'),
         content: (
           <ItemsForm
             items={formState.items}
             onAddItem={handleAddItem}
             onUpdateItem={handleUpdateItem}
             onRemoveItem={handleRemoveItem}
+            errors={errors}
+            showErrors={hasAttemptedSubmit}
           />
         ),
       },
       {
         id: 'package',
         title: 'Package Details',
+        isValid: formState.weight > 0 && formState.length > 0 && formState.width > 0 && formState.height > 0,
+        hasErrors: getSectionErrors('package'),
         content: (
           <PackageForm
             weight={formState.weight}
@@ -244,6 +279,8 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
             onWidthChange={(value) => setFormState((prev) => ({ ...prev, width: value }))}
             onHeightChange={(value) => setFormState((prev) => ({ ...prev, height: value }))}
             onFragileChange={(value) => setFormState((prev) => ({ ...prev, isFragile: value }))}
+            errors={errors}
+            showErrors={hasAttemptedSubmit}
           />
         ),
       },
@@ -251,12 +288,15 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
         id: 'delivery',
         title: 'Delivery Information',
         isValid: distance !== null && isDistanceValid(distance),
+        hasErrors: getSectionErrors('delivery'),
         content: (
           <DeliveryForm
             serviceType={formState.serviceType}
             distance={distance}
             shippingFee={shippingFee}
             onServiceTypeChange={handleServiceTypeChange}
+            errors={errors}
+            showErrors={hasAttemptedSubmit}
           />
         ),
       },
@@ -271,6 +311,8 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
       handleUpdateItem,
       handleRemoveItem,
       handleServiceTypeChange,
+      getSectionErrors,
+      hasAttemptedSubmit,
     ]
   )
 
@@ -291,11 +333,26 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.recipientEmail)) {
       newErrors.recipientEmail = 'Please enter a valid email address'
     }
-    if (!formState.deliveryCoordinates) {
-      newErrors.deliveryAddress = 'This field is required'
+    if (!formState.deliveryCoordinates && !formState.recipientAddress.trim()) {
+      newErrors.deliveryAddress = 'Delivery address is required'
+    }
+    if (!formState.deliveryCoordinates && (distance === null || distance <= 0)) {
+      newErrors.distance = 'Distance is required when using manual address'
     }
     if (formState.items.length === 0) {
       newErrors.items = 'At least one item is required'
+    }
+    if (formState.weight <= 0) {
+      newErrors.weight = 'Weight must be greater than 0'
+    }
+    if (formState.length <= 0) {
+      newErrors.length = 'Length must be greater than 0'
+    }
+    if (formState.width <= 0) {
+      newErrors.width = 'Width must be greater than 0'
+    }
+    if (formState.height <= 0) {
+      newErrors.height = 'Height must be greater than 0'
     }
     if (distance !== null && !isDistanceValid(distance)) {
       newErrors.distance = 'Delivery location must be within 3 km radius of the outlet'
@@ -306,10 +363,6 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
 
   // Get all current validation errors for form-level summary (only after submit attempt)
   const formErrors = hasAttemptedSubmit ? validateForm() : {}
-  const hasFormErrors = Object.keys(formErrors).length > 0
-
-  // Get list of invalid fields for summary
-  const invalidFields = Object.keys(formErrors).filter(key => formErrors[key])
 
   const handleConfirmOrder = () => {
     // Mark that user has attempted to submit
@@ -382,34 +435,7 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
         onClose={() => setShowConfirmation(false)}
       />
 
-      {/* Form Error Summary */}
-      {hasFormErrors && (
-        <div 
-          className="p-4 bg-red-50 border border-red-200 rounded-lg" 
-          role="alert" 
-          aria-live="polite"
-        >
-          <div className="flex items-start gap-2">
-            <svg 
-              className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <div>
-              <p className="text-sm font-medium text-red-800">Please correct the following errors:</p>
-              <ul className="mt-2 text-sm text-red-700 list-disc list-inside space-y-1">
-                {invalidFields.map((field) => (
-                  <li key={field}>{formErrors[field]}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Form Section with Accordion */}
       <div className="lg:col-span-2 space-y-4 sm:space-y-6">
@@ -428,28 +454,14 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
 
         <FormAccordion sections={accordionSections} defaultOpenSection="outlet" />
 
-        {/* Distance Validation Error */}
-        {distance !== null && !isDistanceValid(distance) && (
-          <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm font-medium text-red-700">
-              Delivery location must be within 3 km radius of the outlet
-            </p>
-          </div>
-        )}
 
-        {/* Form Error */}
-        {errors.form && (
-          <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm font-medium text-red-700">{errors.form}</p>
-          </div>
-        )}
 
         {/* Action Buttons */}
-        <div className="space-y-2 sm:space-y-3">
+        <div className="space-y-2">
           <button
             onClick={handleConfirmOrder}
             disabled={distance !== null && !isDistanceValid(distance)}
-            className="w-full px-4 py-3 bg-[#ED0577] text-white rounded-lg font-medium hover:bg-[#d9066a] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors min-h-[44px] text-sm sm:text-base"
+            className="w-full px-4 py-2.5 bg-[#ED0577] text-white rounded-lg font-medium hover:bg-[#d9066a] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors min-h-[40px] text-sm"
           >
             {isEditMode ? 'Update Order' : 'Confirm Order'}
           </button>
@@ -458,7 +470,7 @@ export function OrderCreationForm({ outlets, onSubmit, onCancel, editOrder }: Or
               clearSavedData()
               onCancel()
             }}
-            className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors min-h-[44px] text-sm sm:text-base"
+            className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors min-h-[40px] text-sm"
           >
             Cancel
           </button>

@@ -65,6 +65,64 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     }
   }, [])
 
+  const handleStatusKeyDown = useCallback(
+    (e: React.KeyboardEvent, statusValue: OrderStatus) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        const newStatuses = filters.statuses.includes(statusValue)
+          ? filters.statuses.filter((s) => s !== statusValue)
+          : [...filters.statuses, statusValue]
+        setStatuses(newStatuses)
+        handleFilterUpdate()
+      }
+      // Arrow key navigation
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault()
+        const currentIndex = statusOptions.findIndex((s) => s.value === statusValue)
+        const nextIndex = (currentIndex + 1) % statusOptions.length
+        const nextOption = document.querySelector(`[data-status-option="${statusOptions[nextIndex].value}"]`) as HTMLElement
+        nextOption?.focus()
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        const currentIndex = statusOptions.findIndex((s) => s.value === statusValue)
+        const prevIndex = (currentIndex - 1 + statusOptions.length) % statusOptions.length
+        const prevOption = document.querySelector(`[data-status-option="${statusOptions[prevIndex].value}"]`) as HTMLElement
+        prevOption?.focus()
+      }
+    },
+    [filters.statuses, setStatuses, handleFilterUpdate]
+  )
+
+  const handleServiceTypeKeyDown = useCallback(
+    (e: React.KeyboardEvent, serviceValue: ServiceType) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        const newTypes = filters.serviceTypes.includes(serviceValue)
+          ? filters.serviceTypes.filter((t) => t !== serviceValue)
+          : [...filters.serviceTypes, serviceValue]
+        setServiceTypes(newTypes)
+        handleFilterUpdate()
+      }
+      // Arrow key navigation
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault()
+        const currentIndex = serviceTypeOptions.findIndex((s) => s.value === serviceValue)
+        const nextIndex = (currentIndex + 1) % serviceTypeOptions.length
+        const nextOption = document.querySelector(`[data-service-option="${serviceTypeOptions[nextIndex].value}"]`) as HTMLElement
+        nextOption?.focus()
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        const currentIndex = serviceTypeOptions.findIndex((s) => s.value === serviceValue)
+        const prevIndex = (currentIndex - 1 + serviceTypeOptions.length) % serviceTypeOptions.length
+        const prevOption = document.querySelector(`[data-service-option="${serviceTypeOptions[prevIndex].value}"]`) as HTMLElement
+        prevOption?.focus()
+      }
+    },
+    [filters.serviceTypes, setServiceTypes, handleFilterUpdate]
+  )
+
   // Memoize hasActiveFilters to prevent unnecessary re-renders
   const hasActiveFilters = useMemo(
     () =>
@@ -89,6 +147,29 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     const d = new Date(filters.dateRange.to)
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
   }, [filters.dateRange.to])
+
+  // Memoized handlers
+  const handleStatusClick = useCallback(
+    (statusValue: OrderStatus) => {
+      const newStatuses = filters.statuses.includes(statusValue)
+        ? filters.statuses.filter((s) => s !== statusValue)
+        : [...filters.statuses, statusValue]
+      setStatuses(newStatuses)
+      handleFilterUpdate()
+    },
+    [filters.statuses, setStatuses, handleFilterUpdate]
+  )
+
+  const handleServiceTypeClick = useCallback(
+    (serviceValue: ServiceType) => {
+      const newTypes = filters.serviceTypes.includes(serviceValue)
+        ? filters.serviceTypes.filter((t) => t !== serviceValue)
+        : [...filters.serviceTypes, serviceValue]
+      setServiceTypes(newTypes)
+      handleFilterUpdate()
+    },
+    [filters.serviceTypes, setServiceTypes, handleFilterUpdate]
+  )
 
   const handleOutletChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -151,34 +232,31 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
       {/* Filter content */}
       <div
         id="filter-content"
-        className={`${isExpanded || 'hidden md:block'} p-2 sm:p-3 space-y-2 sm:space-y-3`}
+        className={`${isExpanded || 'hidden md:block'} p-4`}
         role="region"
         aria-label="Filter options"
       >
-        {/* Row 1: Invoice, Date Range, Status */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-          {/* Invoice number search */}
-          <div>
-            <label htmlFor="invoice-search" className="block text-xs font-medium text-gray-700 mb-0.5">
+        {/* Compact filter row */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {/* Invoice number */}
+          <div className="min-w-0">
+            <label htmlFor="invoice-search" className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
               Invoice
             </label>
             <input
               type="text"
               id="invoice-search"
-              placeholder="Search..."
+              placeholder="Search invoice..."
               value={invoiceInputValue}
               onChange={handleInvoiceChange}
-              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent focus:bg-white transition-all"
               aria-describedby="invoice-search-hint"
             />
-            <p id="invoice-search-hint" className="sr-only">
-              Enter invoice number to filter orders
-            </p>
           </div>
 
-          {/* Date From */}
-          <div>
-            <label htmlFor="date-from" className="block text-xs font-medium text-gray-700 mb-0.5">
+          {/* Date from */}
+          <div className="min-w-0">
+            <label htmlFor="date-from" className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
               From
             </label>
             <input
@@ -186,13 +264,13 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               id="date-from"
               value={dateFromValue}
               onChange={handleDateFromChange}
-              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent focus:bg-white transition-all"
             />
           </div>
 
-          {/* Date To */}
-          <div>
-            <label htmlFor="date-to" className="block text-xs font-medium text-gray-700 mb-0.5">
+          {/* Date to */}
+          <div className="min-w-0">
+            <label htmlFor="date-to" className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
               To
             </label>
             <input
@@ -200,27 +278,26 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               id="date-to"
               value={dateToValue}
               onChange={handleDateToChange}
-              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent focus:bg-white transition-all"
             />
           </div>
 
-          {/* Status dropdown */}
-          <div>
-            <label htmlFor="status-filter" className="block text-xs font-medium text-gray-700 mb-0.5">
+          {/* Status */}
+          <div className="min-w-0">
+            <label htmlFor="status-filter" className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
               Status
             </label>
             <select
               id="status-filter"
-              multiple
-              value={filters.statuses}
+              value={filters.statuses[0] || ''}
               onChange={(e) => {
-                const selected = Array.from(e.target.selectedOptions, (option) => option.value as OrderStatus)
-                setStatuses(selected)
+                const value = e.target.value as OrderStatus
+                setStatuses(value ? [value] : [])
                 handleFilterUpdate()
               }}
-              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
-              aria-label="Filter by status"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent focus:bg-white transition-all cursor-pointer"
             >
+              <option value="">All Status</option>
               {statusOptions.map((status) => (
                 <option key={status.value} value={status.value}>
                   {status.label}
@@ -228,27 +305,23 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               ))}
             </select>
           </div>
-        </div>
 
-        {/* Row 2: Service Type, Outlet, Reset */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-          {/* Service type dropdown */}
-          <div>
-            <label htmlFor="service-filter" className="block text-xs font-medium text-gray-700 mb-0.5">
-              Service Type
+          {/* Service type */}
+          <div className="min-w-0">
+            <label htmlFor="service-filter" className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
+              Service
             </label>
             <select
               id="service-filter"
-              multiple
-              value={filters.serviceTypes}
+              value={filters.serviceTypes[0] || ''}
               onChange={(e) => {
-                const selected = Array.from(e.target.selectedOptions, (option) => option.value as ServiceType)
-                setServiceTypes(selected)
+                const value = e.target.value as ServiceType
+                setServiceTypes(value ? [value] : [])
                 handleFilterUpdate()
               }}
-              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
-              aria-label="Filter by service type"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent focus:bg-white transition-all cursor-pointer"
             >
+              <option value="">All Services</option>
               {serviceTypeOptions.map((service) => (
                 <option key={service.value} value={service.value}>
                   {service.label}
@@ -257,16 +330,16 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
             </select>
           </div>
 
-          {/* Outlet filter */}
-          <div>
-            <label htmlFor="outlet-filter" className="block text-xs font-medium text-gray-700 mb-0.5">
+          {/* Outlet */}
+          <div className="min-w-0">
+            <label htmlFor="outlet-filter" className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
               Outlet
             </label>
             <select
               id="outlet-filter"
               value={filters.outletId || ''}
               onChange={handleOutletChange}
-              className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#ED0577] focus:border-transparent focus:bg-white transition-all cursor-pointer"
             >
               <option value="">All Outlets</option>
               {outlets.map((outlet) => (
@@ -276,23 +349,23 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               ))}
             </select>
           </div>
-
-          {/* Reset button */}
-          {hasActiveFilters && (
-            <div className="flex items-end">
-              <button
-                onClick={handleReset}
-                className="w-full px-2 py-1.5 text-xs text-gray-600 hover:text-[#ED0577] hover:bg-gray-50 border border-gray-300 rounded transition-colors flex items-center justify-center gap-1"
-                aria-label="Clear all filters"
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Clear
-              </button>
-            </div>
-          )}
         </div>
+
+        {/* Reset button */}
+        {hasActiveFilters && (
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <button
+              onClick={handleReset}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-[#ED0577] transition-colors"
+              aria-label="Clear all filters"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Clear Filters
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

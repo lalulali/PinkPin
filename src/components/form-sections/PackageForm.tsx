@@ -17,6 +17,7 @@ interface PackageFormProps {
   onHeightChange: (value: number) => void
   onFragileChange: (value: boolean) => void
   errors?: Record<string, string>
+  showErrors?: boolean
 }
 
 export function PackageForm({
@@ -31,6 +32,7 @@ export function PackageForm({
   onHeightChange,
   onFragileChange,
   errors = {},
+  showErrors = false,
 }: PackageFormProps) {
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
@@ -58,7 +60,8 @@ export function PackageForm({
   // Get validation error for a field
   const getFieldError = useCallback(
     (field: string): string | null => {
-      if (!touched[field]) return null
+      // Show errors if showErrors is true OR field has been touched
+      if (!showErrors && !touched[field]) return null
 
       switch (field) {
         case 'weight':
@@ -73,7 +76,7 @@ export function PackageForm({
           return null
       }
     },
-    [touched, weight, length, width, height, validateNumeric]
+    [touched, weight, length, width, height, validateNumeric, showErrors]
   )
 
   const weightError = getFieldError('weight') || errors.weight

@@ -16,6 +16,8 @@ interface ItemsFormProps {
   onAddItem: () => void
   onUpdateItem: (id: string, field: 'description' | 'quantity', value: string | number) => void
   onRemoveItem: (id: string) => void
+  errors?: Record<string, string>
+  showErrors?: boolean
 }
 
 export function ItemsForm({
@@ -23,13 +25,21 @@ export function ItemsForm({
   onAddItem,
   onUpdateItem,
   onRemoveItem,
+  errors = {},
+  showErrors = false,
 }: ItemsFormProps) {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
+  const hasItemsError = showErrors && !!errors.items
 
   return (
     <div className="space-y-4">
       {items.length === 0 ? (
-        <p className="text-sm text-gray-600">No items added yet</p>
+        <div className={`p-4 rounded-lg border-2 ${hasItemsError ? 'border-red-500 bg-red-50' : 'border-gray-200 bg-gray-50'}`}>
+          <p className={`text-sm ${hasItemsError ? 'text-red-700' : 'text-gray-600'}`}>No items added yet</p>
+          {errors.items && (
+            <p className="text-xs text-red-600 mt-2 font-medium">{errors.items}</p>
+          )}
+        </div>
       ) : (
         <div className="space-y-3" role="list" aria-label="Order items">
           {items.map((item, index) => (

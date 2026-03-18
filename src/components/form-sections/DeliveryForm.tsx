@@ -13,6 +13,8 @@ interface DeliveryFormProps {
   distance: number | null
   shippingFee: number
   onServiceTypeChange: (type: ServiceType) => void
+  errors?: Record<string, string>
+  showErrors?: boolean
 }
 
 export function DeliveryForm({
@@ -20,8 +22,11 @@ export function DeliveryForm({
   distance,
   shippingFee,
   onServiceTypeChange,
+  errors = {},
+  showErrors = false,
 }: DeliveryFormProps) {
   const serviceTypes: ServiceType[] = ['standard', 'express', 'same-day']
+  const distanceError = showErrors ? errors.distance : null
 
   return (
     <div className="space-y-6">
@@ -51,11 +56,14 @@ export function DeliveryForm({
         </div>
       </fieldset>
 
-      {/* Distance Display */}
+      {/* Distance Display with Error */}
       {distance !== null && (
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg" role="status">
-          <p className="text-sm text-gray-600">Distance</p>
-          <p className="text-lg font-semibold text-gray-900">{distance.toFixed(1)} km</p>
+        <div className={`p-4 border rounded-lg ${distanceError ? 'bg-red-50 border-red-500' : 'bg-blue-50 border-blue-200'}`} role="status">
+          <p className={`text-sm ${distanceError ? 'text-red-700' : 'text-gray-600'}`}>Distance</p>
+          <p className={`text-lg font-semibold ${distanceError ? 'text-red-900' : 'text-gray-900'}`}>{distance.toFixed(1)} km</p>
+          {distanceError && (
+            <p className="text-xs text-red-600 mt-2 font-medium">{distanceError}</p>
+          )}
         </div>
       )}
 

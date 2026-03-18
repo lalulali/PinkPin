@@ -85,7 +85,7 @@ export const useUIStore = create<UIState>()(
       setSort: (sort) => set({ sort }),
 
       // Layout
-      layout: 'card',
+      layout: 'table',
       setLayout: (layout) => set({ layout }),
 
       // Pagination
